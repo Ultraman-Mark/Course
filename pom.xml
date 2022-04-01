@@ -7,7 +7,8 @@
         <module>eureka</module>
 		<module>system</module>
 		<module>gateway</module>
-	</modules>
+        <module>server</module>
+    </modules>
     <parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -48,16 +49,40 @@
 				<artifactId>mysql-connector-java</artifactId>
 				<version>8.0.12</version>
 			</dependency>
+
+			<dependency>
+				<groupId>com.course</groupId>
+				<artifactId>server</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
-<!--	<build>-->
-<!--		<plugins>-->
+	<build>
+		<plugins>
 <!--			<plugin>-->
 <!--				<groupId>org.springframework.boot</groupId>-->
 <!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
 <!--			</plugin>-->
-<!--		</plugins>-->
-<!--	</build>-->
+
+			<plugin>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+				<version>1.3.7</version>
+				<configuration>
+					<configurationFile>src/main/resources/generator/generatorConfig.xml</configurationFile>
+					<overwrite>true</overwrite>
+					<verbose>true</verbose>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>8.0.12</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

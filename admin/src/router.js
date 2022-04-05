@@ -2,6 +2,7 @@ import Vue from "vue"
 import { createRouter, createWebHistory } from 'vue-router';//和vue2 路由不同
 import Login from "./views/login.vue"
 import Admin from  "./views/admin.vue"
+import Welcome from  "./views/admin/welcome.vue"
 
 const routerHistory = createWebHistory();
 
@@ -14,6 +15,10 @@ const router = createRouter({
         },{
             path:'/admin',
             component:Admin,
+            children:[{
+                path:'welcome',
+                component: Welcome,
+            }]
         }
     ],
 });

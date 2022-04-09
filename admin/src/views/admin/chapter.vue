@@ -971,3 +971,17 @@
           </tbody>
         </table>
 </template>
+
+<script>
+export default {
+  name: "chapter",
+  mounted: function (){
+    console.log("chapter");
+    //sidebar激活样式方法一
+    // this.$parent.$parent.activeSidebar("business-chapter-sidebar");
+  },
+  methods:{
+
+  }
+}
+</script>

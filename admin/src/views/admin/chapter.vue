@@ -150,7 +150,6 @@ export default {
     save(page){
       let _this = this;
 
-      //保存校验
       // 保存校验
       if (!Validator.require(_this.chapter.name, "名称")
           || !Validator.length(_this.chapter.courseId, "课程ID", 1, 8)) {
@@ -159,13 +158,15 @@ export default {
 
       Loading.show();
       _this.$axios.post('http://127.0.0.1:9000/business/admin/chapter/save',_this.chapter).then((response)=>{
+        Loading.hide();
         console.log("保存大章列表结果:",response);
         let respd = response.data;
         if (respd.success){
-          Loading.hide();
           $("#form-modal").modal("hide");
           _this.list(1);
           Toast.success("保存成功");
+        } else {
+          Toast.warning(respd.message);
         }
       })
     },

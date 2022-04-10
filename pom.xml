@@ -45,6 +45,13 @@
 				<version>2.1.0</version>
 			</dependency>
 
+			<!--mybatis分页插件pagehelper-->
+			<dependency>
+				<groupId>com.github.pagehelper</groupId>
+				<artifactId>pagehelper-spring-boot-starter</artifactId>
+				<version>1.4.1</version>
+			</dependency>
+
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>

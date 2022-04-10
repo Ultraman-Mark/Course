@@ -13,6 +13,9 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.util.pattern.PathPatternParser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootApplication
 @EnableEurekaClient
 public class GatewayApplication {
@@ -32,17 +35,19 @@ public class GatewayApplication {
 	 */
 	@Bean
 	public CorsWebFilter corsFilter() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 
-		config.setAllowCredentials(Boolean.TRUE);
-		config.addAllowedMethod("*");
-		config.addAllowedOrigin("*");
+		config.setAllowCredentials(true);
+		// 设置访问源地址
+		//config.addAllowedOrigin("*");
+		config.addAllowedOriginPattern("*");
+		// 设置访问源请求头
 		config.addAllowedHeader("*");
-		config.setMaxAge(3600L);
-
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
+		// 设置访问源请求方法
+		config.addAllowedMethod("*");
+		// 对接口配置跨域设置
 		source.registerCorsConfiguration("/**", config);
-
 		return new CorsWebFilter(source);
 	}
 }

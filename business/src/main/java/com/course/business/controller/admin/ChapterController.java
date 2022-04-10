@@ -1,5 +1,6 @@
 package com.course.business.controller.admin;
 
+import com.course.server.dto.ChapterDto;
 import com.course.server.dto.PageDto;
 import com.course.server.service.ChapterService;
 
@@ -25,5 +26,12 @@ public class ChapterController {
         LOG.info("pageDto:{}",pageDto);
         chapterService.list(pageDto);
         return pageDto;
+    }
+
+    @RequestMapping("/save")
+    public ChapterDto save(@RequestBody ChapterDto chapterDto){
+        LOG.info("chapterDto:{}",chapterDto);
+        chapterService.save(chapterDto);
+        return chapterDto;
     }
 }

@@ -134,11 +134,12 @@ export default {
     },
     list(page){
       let _this = this;
-
+      Loading.show();
       _this.$axios.post('http://127.0.0.1:9000/business/admin/chapter/list',{
         page: page,
         size: _this.$refs.pagination.size,
       }).then((response)=>{
+        Loading.hide();
         console.log("查询大章列表结果:",response);
         let respd = response.data
         _this.chapters = respd.content.list;
@@ -148,25 +149,48 @@ export default {
 
     save(page){
       let _this = this;
+      Loading.show();
       _this.$axios.post('http://127.0.0.1:9000/business/admin/chapter/save',_this.chapter).then((response)=>{
         console.log("保存大章列表结果:",response);
         let respd = response.data;
         if (respd.success){
+          Loading.hide();
           $("#form-modal").modal("hide");
-          this.list(1);
+          _this.list(1);
+          Toast.success("保存成功");
         }
       })
     },
 
     del(id){
       let _this = this;
-      _this.$axios.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
-        console.log("删除大章列表结果:",response);
-        let respd = response.data;
-        if (respd.success){
-          this.list(1);
-        }
+      Confirm.show("删除大章后不可恢复,确认删除?",function (){
+        Loading.show();
+        _this.$axios.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
+          Loading.hide();
+          console.log("删除大章列表结果:",response);
+          let respd = response.data;
+          if (respd.success){
+            _this.list(1);
+            Toast.success("删除成功");
+          }
+        })
       })
+
+      // Swal.fire({
+      //   title: '确定删除?',
+      //   text: "删除后不可恢复,确认删除!",
+      //   icon: 'warning',
+      //   showCancelButton: true,
+      //   confirmButtonColor: '#3085d6',
+      //   cancelButtonColor: '#d33',
+      //   confirmButtonText: '确认!'
+      // }).then((result) => {
+      //   if (result.isConfirmed) {
+      //
+      //   }
+      // })
+
     },
   }
 }

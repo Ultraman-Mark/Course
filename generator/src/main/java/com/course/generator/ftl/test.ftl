@@ -2,7 +2,7 @@ package com.course.generator.test;
 
 public class Test {
     /**
-    * ID
+    * ID test
     */
     private String id;
 }

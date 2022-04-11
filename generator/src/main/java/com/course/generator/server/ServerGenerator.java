@@ -16,9 +16,12 @@ public class ServerGenerator {
     public static void main(String[] args) throws Exception {
         String Domain = "Section";
         String domain = "section";
+        String tableNameCn = "小节";
+        String module = MODULE;
         Map<String, Object> map = new HashMap<>();
         map.put("Domain", Domain);
         map.put("domain", domain);
+        map.put("module",module);
 //        // 生成dto
 //        FreemarkerUtil.initConfig("dto.ftl");
 //        FreemarkerUtil.generator(toDPath + Domain + "Dto.java", map);

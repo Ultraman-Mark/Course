@@ -132,21 +132,28 @@ export default {
       _this.chapter = $.extend({},chapter);
       $("#form-modal").modal("show");
     },
+
+    /**
+     * 列表查询
+     */
     list(page){
       let _this = this;
-      Loading.show();
+      // Loading.show();
       _this.$axios.post('http://127.0.0.1:9000/business/admin/chapter/list',{
         page: page,
         size: _this.$refs.pagination.size,
       }).then((response)=>{
-        Loading.hide();
-        console.log("查询大章列表结果:",response);
-        let respd = response.data
+        // Loading.hide();
+        console.log("大章输出"+response.data);
+        let respd = response.data;
         _this.chapters = respd.content.list;
         _this.$refs.pagination.render(page,respd.content.total);
       })
     },
 
+    /**
+     * 点击【保存】
+     */
     save(page){
       let _this = this;
 
@@ -159,7 +166,6 @@ export default {
       Loading.show();
       _this.$axios.post('http://127.0.0.1:9000/business/admin/chapter/save',_this.chapter).then((response)=>{
         Loading.hide();
-        console.log("保存大章列表结果:",response);
         let respd = response.data;
         if (respd.success){
           $("#form-modal").modal("hide");
@@ -171,13 +177,15 @@ export default {
       })
     },
 
+    /**
+     * 点击【删除】
+     */
     del(id){
       let _this = this;
       Confirm.show("删除大章后不可恢复,确认删除?",function (){
         Loading.show();
         _this.$axios.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
           Loading.hide();
-          console.log("删除大章列表结果:",response);
           let respd = response.data;
           if (respd.success){
             _this.list(1);
@@ -185,21 +193,6 @@ export default {
           }
         })
       })
-
-      // Swal.fire({
-      //   title: '确定删除?',
-      //   text: "删除后不可恢复,确认删除!",
-      //   icon: 'warning',
-      //   showCancelButton: true,
-      //   confirmButtonColor: '#3085d6',
-      //   cancelButtonColor: '#d33',
-      //   confirmButtonText: '确认!'
-      // }).then((result) => {
-      //   if (result.isConfirmed) {
-      //
-      //   }
-      // })
-
     },
   }
 }

@@ -39,10 +39,6 @@ public class ${Domain}Controller {
     @PostMapping("/save")
     public ResponseDto save(@RequestBody ${Domain}Dto ${domain}Dto){
         // 保存校验
-<#--        ValidatorUtil.require(${domain}Dto.getName(), "名称");-->
-<#--        ValidatorUtil.require(${domain}Dto.getCourseId(), "课程ID");-->
-<#--        ValidatorUtil.length(${domain}Dto.getCourseId(), "课程ID", 1, 8);-->
-
         ResponseDto responseDto = new ResponseDto();
         ${domain}Service.save(${domain}Dto);
         responseDto.setContent(${domain}Dto);

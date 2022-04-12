@@ -2,7 +2,6 @@ import { createApp } from 'vue'
 import App from './app.vue'
 import router from './router'
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
-import filter from './filter/filter'
 
 const app = createApp(App);
 
@@ -28,18 +27,15 @@ axios.interceptors.response.use(
     });
 
 // 全局过滤器
-// Object.keys(filter).forEach(key => {
-//     app.filter(key, filter[key])
-// });
 app.config.globalProperties.$filters = {
-    filter(list,key){
-        if (!list || !key) {
+    filter(object,key){
+        if (!object || !key) {
             return "";
         } else {
             let result = "";
-            for(let i=0;i < list.length; i++){
-                if (key === list[i]["key"]) {
-                    result = list[i]["value"];
+            for(let enums in object){
+                if (key === object[enums]["key"]) {
+                    result = object[enums]["value"];
                 }
             }
             return result;

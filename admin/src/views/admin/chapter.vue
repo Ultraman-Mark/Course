@@ -139,6 +139,7 @@ export default {
     list(page){
       let _this = this;
       // Loading.show();
+      console.log(process.env.VUE_APP_SERVER);
       _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/chapter/list',{
         page: page,
         size: _this.$refs.pagination.size,

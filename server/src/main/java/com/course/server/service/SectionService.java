@@ -54,8 +54,6 @@ public class SectionService {
      */
     private void insert(Section section){
         section.setId(UuidUtil.getShortUuid());
-//        Section section = new Section();
-//        BeanUtils.copyProperties(sectionDto,section);
         sectionMapper.insert(section);
     }
 

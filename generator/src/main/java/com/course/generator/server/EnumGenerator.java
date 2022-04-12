@@ -19,9 +19,9 @@ public class EnumGenerator {
         try {
             toJson(SectionChargeEnum.class, bufferObject, bufferArray);
             toJson(YesNoEnum.class, bufferObject, bufferArray);
-//            toJson(CourseLevelEnum.class, bufferObject, bufferArray);
-//            toJson(CourseChargeEnum.class, bufferObject, bufferArray);
-//            toJson(CourseStatusEnum.class, bufferObject, bufferArray);
+            toJson(CourseLevelEnum.class, bufferObject, bufferArray);
+            toJson(CourseChargeEnum.class, bufferObject, bufferArray);
+            toJson(CourseStatusEnum.class, bufferObject, bufferArray);
 //            toJson(FileUseEnum.class, bufferObject, bufferArray);
 //            toJson(SmsUseEnum.class, bufferObject, bufferArray);
 //            toJson(SmsStatusEnum.class, bufferObject, bufferArray);

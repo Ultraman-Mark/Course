@@ -1,4 +1,4 @@
-package com.course.generator.vue;
+package com.course.generator.server;
 
 import com.course.generator.util.DbUtil;
 import com.course.generator.util.Field;

@@ -15,7 +15,6 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/admin/chapter")
 public class ChapterController {
-
     private static final Logger LOG = LoggerFactory.getLogger(ChapterController.class);
     private static final String BUSINESS_NAME = "大章";
 
@@ -30,7 +29,6 @@ public class ChapterController {
         ResponseDto responseDto = new ResponseDto();
         chapterService.list(pageDto);
         responseDto.setContent(pageDto);
-//        System.out.println(responseDto.getContent());
         return responseDto;
     }
 

@@ -11,19 +11,19 @@ import java.util.regex.Pattern;
 public class DbUtil {
 
     public static Connection getConnection() {
-        Connection conn = null;
+        Connection con = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/course?serverTimezone=Asia/Shanghai&autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false";
             String user = "course";
             String pass = "course2022";
-            conn = DriverManager.getConnection(url, user, pass);
+            con = DriverManager.getConnection(url, user, pass);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return conn;
+        return con;
     }
 
     /**

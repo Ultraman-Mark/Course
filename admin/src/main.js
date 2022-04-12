@@ -27,3 +27,5 @@ axios.interceptors.response.use(
     });
 
 export default axios;
+
+console.log("环境:",process.env.NODE_ENV);

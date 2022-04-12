@@ -35,8 +35,8 @@ public class VueGenerator {
         String tableName = tableElement.attributeValue("tableName");
         String tableNameCn = DbUtil.getTableComment(tableName);
         String domain = Domain.substring(0, 1).toLowerCase() + Domain.substring(1);
-        System.out.println("表："+tableElement.attributeValue("tableName"));
-        System.out.println("Domain："+tableElement.attributeValue("domainObjectName"));
+        System.out.println("表:"+tableElement.attributeValue("tableName"));
+        System.out.println("Domain:"+tableElement.attributeValue("domainObjectName"));
 
         List<Field> fieldList = DbUtil.getColumnByTableName(tableName);
         Set<String> typeSet = getJavaTypes(fieldList);

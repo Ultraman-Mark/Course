@@ -71,34 +71,6 @@
       </div>
     </div>
 
-<!--    <div class="row">-->
-<!--      <div v-for="course in courses" class="col-md-4">-->
-<!--        <div class="thumbnail search-thumbnail">-->
-<!--          <img v-show="!course.image" class="media-object" src="/static/image/demo-course.jpg" />-->
-<!--          <img v-show="course.image" class="media-object" v-bind:src="course.image" />-->
-<!--          <div class="caption">-->
-<!--            <div class="clearfix">-->
-<!--              <span class="pull-right label label-grey info-label">{{ $filters.filter(COURSE_LEVEL,course.level) }}</span>-->
-<!--              <span class="pull-right label label-grey info-label">{{ $filters.filter(COURSE_CHARGE,course.charge) }}</span>-->
-<!--              <span class="pull-right label label-grey info-label">{{ $filters.filter(COURSE_STATUS,course.status) }}</span>-->
-<!--            </div>-->
-
-<!--            <h3 class="search-title">-->
-<!--              <a href="#" class="blue">{{course.name}}</a>-->
-<!--            </h3>-->
-<!--            <p>{{course.summary}}</p>-->
-<!--            <p>-->
-<!--              <button v-on:click="edit(course)" class="btn btn-xs btn-info">-->
-<!--                <i class="ace-icon fa fa-pencil bigger-120"></i>-->
-<!--              </button>-->
-<!--              <button v-on:click="del(course.id)" class="btn btn-xs btn-danger">-->
-<!--                <i class="ace-icon fa fa-trash-o bigger-120"></i>-->
-<!--              </button>-->
-<!--            </p>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
 
 <!--    <table id="simple-table" class="table  table-bordered table-hover">-->
 <!--      <thead>-->
@@ -358,6 +330,15 @@
                         }
                     })
                 })
+            },
+
+            /**
+             * 点击【大章】
+             */
+            toChapter(course) {
+              let _this = this;
+              SessionStorage.set(SESSION_KEY_COURSE, course);
+              _this.$router.push("/business/chapter");
             },
         }
     }

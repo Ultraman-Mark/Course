@@ -36,8 +36,8 @@
         <td>{{section.id}}</td>
         <td>{{section.title}}</td>
         <td>{{section.video}}</td>
-        <td>{{section.time}}</td>
-        <td>{{ $filters.filter(SECTION_CHARGE,section.charge)}}</td>
+        <td>{{ $filters.formatSecond(section.time) }}</td>
+        <td>{{ $filters.filter(SECTION_CHARGE,section.charge) }}</td>
         <td>{{section.sort}}</td>
       <td>
         <div class="hidden-sm hidden-xs btn-group">

@@ -11,14 +11,13 @@ import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
-        import java.util.Date;
+import java.util.Date;
 
 @Service
 public class SectionService {
@@ -53,6 +52,8 @@ public class SectionService {
     /**
     * 保存
     */
+//    @Transactional(rollbackFor = Exception.class)  //Exception异常回滚
+    @Transactional
     public void save(SectionDto sectionDto){
         Section section = CopyUtil.copy(sectionDto,Section.class);
         if (!StringUtils.hasText(sectionDto.getId())){

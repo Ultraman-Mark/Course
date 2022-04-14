@@ -6,6 +6,7 @@ import Welcome from  "./views/admin/welcome.vue"
 import Chapter from "./views/admin/chapter.vue"
 import Course from "./views/admin/course.vue"
 import Section from "./views/admin/section.vue"
+import Category from "./views/admin/category.vue"
 
 const routerHistory = createWebHistory();
 
@@ -38,6 +39,10 @@ const router = createRouter({
                 path:"business/section",
                 name:"business/section",
                 component:Section,
+            },{
+                path:"business/category",
+                name:"business/category",
+                component:Category,
             }]
         }
     ],

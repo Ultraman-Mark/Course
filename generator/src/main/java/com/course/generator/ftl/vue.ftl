@@ -118,110 +118,110 @@
 </template>
 
 <script>
-    import Pagination from "../../components/pagination"
-    export default {
-        components:{Pagination},
-        name: "${module}-${domain}",
-        data: function (){
-            return {
-              ${domain}:{},
-              ${domain}s: [],
-              <#list fieldList as field>
-                <#if field.enums>
-              ${field.enumsConst}: ${field.enumsConst},
-                </#if>
-              </#list>
-            }
-        },
-        mounted: function (){
-            let _this = this;
-            _this.$refs.pagination.size = 5;
-            _this.list(1);
-            //sidebar激活样式方法一
-            // this.$parent.$parent.activeSidebar("${module}-${domain}-sidebar");
-        },
-        methods:{
-            add(){
-                let _this = this;
-                _this.${domain} = {};
-                $("#form-modal").modal("show");
-            },
-            edit(${domain}){
-                let _this = this;
-                _this.${domain} = $.extend({},${domain});
-                $("#form-modal").modal("show");
-            },
+  import Pagination from "../../components/pagination"
+  export default {
+    components:{Pagination},
+    name: "${module}-${domain}",
+    data: function (){
+      return {
+        ${domain}:{},
+        ${domain}s: [],
+        <#list fieldList as field>
+          <#if field.enums>
+        ${field.enumsConst}: ${field.enumsConst},
+          </#if>
+        </#list>
+      }
+    },
+    mounted: function (){
+        let _this = this;
+        _this.$refs.pagination.size = 5;
+        _this.list(1);
+        //sidebar激活样式方法一
+        // this.$parent.$parent.activeSidebar("${module}-${domain}-sidebar");
+    },
+    methods:{
+      add(){
+        let _this = this;
+        _this.${domain} = {};
+        $("#form-modal").modal("show");
+      },
+      edit(${domain}){
+        let _this = this;
+        _this.${domain} = $.extend({},${domain});
+        $("#form-modal").modal("show");
+      },
 
-            /**
-             * 列表查询
-             */
-            list(page){
-                let _this = this;
-                Loading.show();
-                _this.$axios.post(process.env.VUE_APP_SERVER+'/${module}/admin/${domain}/list',{
-                    page: page,
-                    size: _this.$refs.pagination.size,
-                }).then((response)=>{
-                    Loading.hide();
-                    let respd = response.data;
-                    _this.${domain}s = respd.content.list;
-                    _this.$refs.pagination.render(page,respd.content.total);
-                })
-            },
+      /**
+       * 列表查询
+       */
+      list(page){
+        let _this = this;
+        Loading.show();
+        _this.$axios.post(process.env.VUE_APP_SERVER+'/${module}/admin/${domain}/list',{
+          page: page,
+          size: _this.$refs.pagination.size,
+        }).then((response)=>{
+          Loading.hide();
+          let respd = response.data;
+          _this.${domain}s = respd.content.list;
+          _this.$refs.pagination.render(page,respd.content.total);
+        })
+      },
 
-            /**
-             * 点击【保存】
-             */
-            save(page){
-                let _this = this;
+      /**
+       * 点击【保存】
+       */
+      save(){
+        let _this = this;
 
-                // 保存校验
-                if (1 != 1
-                <#list fieldList as field>
-                  <#if field.name!="id" && field.nameHump!="createdAt" && field.nameHump!="updatedAt" && field.nameHump!="sort">
-                  <#if !field.nullAble>
-                  || !Validator.require(_this.${domain}.${field.nameHump}, "${field.nameCn}")
-                  </#if>
-                  <#if (field.length > 0)>
-                  || !Validator.length(_this.${domain}.${field.nameHump}, "${field.nameCn}", 1, ${field.length?c})
-                  </#if>
-                  </#if>
-                </#list>
-                ) {
-                  return;
-                }
-
-                Loading.show();
-                _this.$axios.post(process.env.VUE_APP_SERVER+'/${module}/admin/${domain}/save',_this.${domain}).then((response)=>{
-                    Loading.hide();
-                    let respd = response.data;
-                    if (respd.success){
-                        $("#form-modal").modal("hide");
-                        _this.list(1);
-                        Toast.success("保存成功");
-                    } else {
-                        Toast.warning(respd.message);
-                    }
-                })
-            },
-
-            /**
-             * 点击【删除】
-             */
-            del(id){
-                let _this = this;
-                Confirm.show("删除${tableNameCn}后不可恢复,确认删除?",function (){
-                    Loading.show();
-                    _this.$axios.delete(process.env.VUE_APP_SERVER+'/${module}/admin/${domain}/delete/'+id).then((response)=>{
-                        Loading.hide();
-                        let respd = response.data;
-                        if (respd.success){
-                            _this.list(1);
-                            Toast.success("删除成功");
-                        }
-                    })
-                })
-            },
+        // 保存校验
+        if (1 != 1
+        <#list fieldList as field>
+          <#if field.name!="id" && field.nameHump!="createdAt" && field.nameHump!="updatedAt" && field.nameHump!="sort">
+          <#if !field.nullAble>
+          || !Validator.require(_this.${domain}.${field.nameHump}, "${field.nameCn}")
+          </#if>
+          <#if (field.length > 0)>
+          || !Validator.length(_this.${domain}.${field.nameHump}, "${field.nameCn}", 1, ${field.length?c})
+          </#if>
+          </#if>
+        </#list>
+        ) {
+          return;
         }
+
+        Loading.show();
+        _this.$axios.post(process.env.VUE_APP_SERVER+'/${module}/admin/${domain}/save',_this.${domain}).then((response)=>{
+          Loading.hide();
+          let respd = response.data;
+          if (respd.success){
+            $("#form-modal").modal("hide");
+            _this.list(1);
+            Toast.success("保存成功");
+          } else {
+            Toast.warning(respd.message);
+          }
+        })
+      },
+
+      /**
+       * 点击【删除】
+       */
+      del(id){
+        let _this = this;
+        Confirm.show("删除${tableNameCn}后不可恢复,确认删除?",function (){
+          Loading.show();
+          _this.$axios.delete(process.env.VUE_APP_SERVER+'/${module}/admin/${domain}/delete/'+id).then((response)=>{
+            Loading.hide();
+            let respd = response.data;
+            if (respd.success){
+              _this.list(1);
+              Toast.success("删除成功");
+            }
+          })
+        })
+      },
     }
+  }
 </script>

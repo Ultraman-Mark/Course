@@ -20,15 +20,15 @@ public class UploadController {
 
     public static final String BUSINESS_NAME = "文件上传";
 
-//    @Value("${file.domain}")
-//    private String FILE_DOMAIN;
-//
+    @Value("${file.domain}")
+    private String FILE_DOMAIN;
+
 //    @Value("${oss.domain}")
 //    private String OSS_DOMAIN;
 //
-//    @Value("${file.path}")
-//    private String FILE_PATH;
-//
+    @Value("${file.path}")
+    private String FILE_PATH;
+
 //    @Value("${vod.accessKeyId}")
 //    private String accessKeyId;
 //
@@ -47,12 +47,13 @@ public class UploadController {
 //        保存文件到本地
         String fileName = file.getOriginalFilename();
         String key = UuidUtil.getShortUuid();
-        String fullPath = "D:/Project/temp/course/teacher/" + key + "-" + fileName;
+        String fullPath = FILE_PATH + "teacher/" + key + "-" + fileName;
         File dest = new File(fullPath);
         file.transferTo(dest);
         LOG.info(dest.getAbsolutePath());
 
         ResponseDto responseDto = new ResponseDto();
+        responseDto.setContent(FILE_DOMAIN + "teacher/"+key+"-"+fileName);
         return responseDto;
     }
 //    public ResponseDto upload(@RequestBody FileDto fileDto) throws Exception {

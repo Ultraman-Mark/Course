@@ -47,7 +47,7 @@ public class UploadController {
 //        保存文件到本地
         String fileName = file.getOriginalFilename();
         String key = UuidUtil.getShortUuid();
-        String fullPath = "D:/Project/temp/teacher/" + key + "-" + fileName;
+        String fullPath = "D:/Project/temp/course/teacher/" + key + "-" + fileName;
         File dest = new File(fullPath);
         file.transferTo(dest);
         LOG.info(dest.getAbsolutePath());

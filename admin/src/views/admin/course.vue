@@ -81,6 +81,14 @@
           <div class="modal-body">
             <form class="form-horizontal">
               <div class="form-group">
+                <label class="col-sm-2 control-label">
+                  分类
+                </label>
+                <div class="col-sm-10">
+                  <ul id="tree" class="ztree"></ul>
+                </div>
+              </div>
+              <div class="form-group">
                 <label class="col-sm-2 control-label">名称</label>
                 <div class="col-sm-10">
                   <input v-model="course.name" class="form-control">
@@ -160,115 +168,148 @@
 </template>
 
 <script>
-    import Pagination from "../../components/pagination"
-    export default {
-        components:{Pagination},
-        name: "business-course",
-        data: function (){
-            return {
-              course:{},
-              courses: [],
-              SECTION_CHARGE: SECTION_CHARGE,
-              COURSE_LEVEL: COURSE_LEVEL,
-              COURSE_CHARGE: COURSE_CHARGE,
-              COURSE_STATUS: COURSE_STATUS,
+  import Pagination from "../../components/pagination"
+  export default {
+    components:{Pagination},
+    name: "business-course",
+    data: function (){
+      return {
+        course:{},
+        courses: [],
+        SECTION_CHARGE: SECTION_CHARGE,
+        COURSE_LEVEL: COURSE_LEVEL,
+        COURSE_CHARGE: COURSE_CHARGE,
+        COURSE_STATUS: COURSE_STATUS,
+        categorys: [],
+      }
+    },
+    mounted: function (){
+      let _this = this;
+      _this.$refs.pagination.size = 5;
+      _this.allCategory();
+      _this.list(1);
+      //sidebar激活样式方法一
+      // this.$parent.$parent.activeSidebar("business-course-sidebar");
+    },
+    methods:{
+      add(){
+        let _this = this;
+        _this.course = {};
+        $("#form-modal").modal("show");
+      },
+      edit(course){
+        let _this = this;
+        _this.course = $.extend({},course);
+        $("#form-modal").modal("show");
+      },
 
-            }
-        },
-        mounted: function (){
-            let _this = this;
-            _this.$refs.pagination.size = 5;
-            _this.list(1);
-            //sidebar激活样式方法一
-            // this.$parent.$parent.activeSidebar("business-course-sidebar");
-        },
-        methods:{
-            add(){
-                let _this = this;
-                _this.course = {};
-                $("#form-modal").modal("show");
-            },
-            edit(course){
-                let _this = this;
-                _this.course = $.extend({},course);
-                $("#form-modal").modal("show");
-            },
+      /**
+       * 列表查询
+       */
+      list(page){
+        let _this = this;
+        Loading.show();
+        _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/course/list',{
+          page: page,
+          size: _this.$refs.pagination.size,
+        }).then((response)=>{
+          Loading.hide();
+          let respd = response.data;
+          _this.courses = respd.content.list;
+          _this.$refs.pagination.render(page,respd.content.total);
+        })
+      },
 
-            /**
-             * 列表查询
-             */
-            list(page){
-                let _this = this;
-                Loading.show();
-                _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/course/list',{
-                    page: page,
-                    size: _this.$refs.pagination.size,
-                }).then((response)=>{
-                    Loading.hide();
-                    let respd = response.data;
-                    _this.courses = respd.content.list;
-                    _this.$refs.pagination.render(page,respd.content.total);
-                })
-            },
+      /**
+       * 点击【保存】
+       */
+      save(page){
+        let _this = this;
 
-            /**
-             * 点击【保存】
-             */
-            save(page){
-                let _this = this;
-
-                // 保存校验
-                if (1 != 1
-                  || !Validator.require(_this.course.name, "名称")
-                  || !Validator.length(_this.course.name, "名称", 1, 50)
-                  || !Validator.length(_this.course.summary, "概述", 1, 2000)
-                  || !Validator.length(_this.course.image, "封面", 1, 100)
-                ) {
-                  return;
-                }
-
-                Loading.show();
-                _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/course/save',_this.course).then((response)=>{
-                    Loading.hide();
-                    let respd = response.data;
-                    if (respd.success){
-                        $("#form-modal").modal("hide");
-                        _this.list(1);
-                        Toast.success("保存成功");
-                    } else {
-                        Toast.warning(respd.message);
-                    }
-                })
-            },
-
-            /**
-             * 点击【删除】
-             */
-            del(id){
-                let _this = this;
-                Confirm.show("删除课程表后不可恢复,确认删除?",function (){
-                    Loading.show();
-                    _this.$axios.delete(process.env.VUE_APP_SERVER+'/business/admin/course/delete/'+id).then((response)=>{
-                        Loading.hide();
-                        let respd = response.data;
-                        if (respd.success){
-                            _this.list(1);
-                            Toast.success("删除成功");
-                        }
-                    })
-                })
-            },
-
-            /**
-             * 点击【大章】
-             */
-            toChapter(course) {
-              let _this = this;
-              SessionStorage.set(SESSION_KEY_COURSE, course);
-              _this.$router.push("/business/chapter");
-            },
+        // 保存校验
+        if (1 != 1
+          || !Validator.require(_this.course.name, "名称")
+          || !Validator.length(_this.course.name, "名称", 1, 50)
+          || !Validator.length(_this.course.summary, "概述", 1, 2000)
+          || !Validator.length(_this.course.image, "封面", 1, 100)
+        ) {
+          return;
         }
+
+        Loading.show();
+        _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/course/save',_this.course).then((response)=>{
+          Loading.hide();
+          let respd = response.data;
+          if (respd.success){
+            $("#form-modal").modal("hide");
+            _this.list(1);
+            Toast.success("保存成功");
+          } else {
+            Toast.warning(respd.message);
+          }
+        })
+      },
+
+      /**
+       * 点击【删除】
+       */
+      del(id){
+        let _this = this;
+        Confirm.show("删除课程表后不可恢复,确认删除?",function (){
+          Loading.show();
+          _this.$axios.delete(process.env.VUE_APP_SERVER+'/business/admin/course/delete/'+id).then((response)=>{
+            Loading.hide();
+            let respd = response.data;
+            if (respd.success){
+              _this.list(1);
+              Toast.success("删除成功");
+            }
+          })
+        })
+      },
+
+      /**
+       * 点击【大章】
+       */
+      toChapter(course) {
+        let _this = this;
+        SessionStorage.set(SESSION_KEY_COURSE, course);
+        _this.$router.push("/business/chapter");
+      },
+
+      allCategory() {
+        let _this = this;
+        Loading.show();
+        _this.$axios.post(process.env.VUE_APP_SERVER + '/business/admin/category/all').then((response)=>{
+          Loading.hide();
+          let resp = response.data;
+          _this.categorys = resp.content;
+          _this.initTree();
+        })
+      },
+
+      initTree(){
+        let _this = this;
+        let setting = {
+          check:{
+            enable:true
+          },
+          data: {
+            simpleData: {
+              idKey: "id",
+              pIdKey: "parent",
+              rootPId: "00000000",
+              enable: true
+            }
+          }
+        };
+
+        let zNodes = _this.categorys;
+
+        $.fn.zTree.init($("#tree"),setting,zNodes);
+      }
     }
+  }
 </script>
 
 <style scoped>

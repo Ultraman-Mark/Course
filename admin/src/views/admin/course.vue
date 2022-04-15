@@ -21,9 +21,9 @@
           <img v-show="course.image" class="media-object" v-bind:src="course.image" />
           <div class="caption">
             <div class="clearfix">
-              <span class="pull-right label label-grey info-label">{{ $filters.filter(COURSE_LEVEL,course.level) }}</span>
-              <span class="pull-right label label-grey info-label">{{ $filters.filter(COURSE_CHARGE,course.charge) }}</span>
-              <span class="pull-right label label-grey info-label">{{ $filters.filter(COURSE_STATUS,course.status) }}</span>
+              <span class="pull-right label label-primary info-label">{{ $filters.filter(COURSE_LEVEL,course.level) }}</span>
+              <span class="pull-right label label-primary info-label">{{ $filters.filter(COURSE_CHARGE,course.charge) }}</span>
+              <span class="pull-right label label-primary info-label">{{ $filters.filter(COURSE_STATUS,course.status) }}</span>
             </div>
 
             <h3 class="search-title">
@@ -47,13 +47,13 @@
             <p>
               <span class="badge badge-info">{{course.id}}</span>
               <span class="badge badge-info">排序:{{course.sort}}</span>
-              <span class="badge badge-info">{{course.time}}</span>
+              <span class="badge badge-info">{{ $filters.formatSecond(course.time) }}</span>
             </p>
             <p>
               <button v-on:click="toChapter(course)" class="btn btn-white btn-xs btn-info btn-round">
                 大章
               </button>&nbsp;
-              <button v-on:click="editContent(course)" class="btn btn-white btn-xs btn-info btn-round">
+              <button v-on:click="toContent(course)" class="btn btn-white btn-xs btn-info btn-round">
                 内容
               </button>&nbsp;
               <button v-on:click="openSortModal(course)" class="btn btn-white btn-xs btn-info btn-round">
@@ -91,7 +91,7 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">封面</label>
                 <div class="col-sm-10">
-                  <file v-bind:id="'image-upload'"
+                  <file v-bind:input-id="'image-upload'"
                         v-bind:text="'上传封面'"
                         v-bind:suffixs="['jpg', 'jpeg', 'png']"
                         v-bind:use="FILE_USE.COURSE.key"
@@ -222,15 +222,49 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-<!--    <div id="course-content-modal" class="modal fade" tabindex="-1" role="dialog">-->
+<!--    <div id="course-content-modal" class="modal fade" tabindex="-1" role="dialog" style="overflow:auto;">-->
 <!--      <div class="modal-dialog modal-lg" role="document">-->
 <!--        <div class="modal-content">-->
 <!--          <div class="modal-header">-->
-<!--            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>-->
+<!--            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
 <!--            <h4 class="modal-title">内容编辑</h4>-->
 <!--          </div>-->
 <!--          <div class="modal-body">-->
+<!--            <file v-bind:input-id="'content-file-upload'"-->
+<!--                  v-bind:text="'上传文件1'"-->
+<!--                  v-bind:suffixs="['jpg', 'jpeg', 'png', 'mp4']"-->
+<!--                  v-bind:use="FILE_USE.COURSE.key"-->
+<!--                  v-bind:after-upload="afterUploadContentFile"></file>-->
+<!--            <br>-->
+<!--            <table id="file-table" class="table table-bordered table-hover">-->
+<!--              <thead>-->
+<!--              <tr>-->
+<!--                <th>名称</th>-->
+<!--                <th>地址</th>-->
+<!--                <th>大小</th>-->
+<!--                <th>操作</th>-->
+<!--              </tr>-->
+<!--              </thead>-->
+
+<!--              <tbody>-->
+<!--              <tr v-for="(f,i) in files" v-bind:key="f.id">-->
+<!--                <td>{{f.name()}}</td>-->
+<!--                <td>{{f.url}}</td>-->
+<!--                <td>{{ $filters.formatFileSize(file.size)}}</td>-->
+<!--                <td>-->
+<!--                  <button v-on:click="delFile(f)" class="btn btn-white btn-xs btn-warning">-->
+<!--                    <i class="ace-icon fa fa-times red2"></i>-->
+<!--                    删除-->
+<!--                  </button>-->
+<!--                </td>-->
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+
 <!--            <form class="form-horizontal">-->
+<!--              <div class="col-lg-12o">-->
+<!--                {{saveContentLabel}}-->
+<!--              </div>-->
 <!--              <div class="form-group">-->
 <!--                <div class="col-lg-12">-->
 <!--                  <div id="content"></div>-->
@@ -239,16 +273,18 @@
 <!--            </form>-->
 <!--          </div>-->
 <!--          <div class="modal-footer">-->
-<!--            <button type="button" class="btn btn-default" data-dismiss="modal">-->
-<!--              <i class="ace-icon fa fa-times"></i>取消-->
+<!--            <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">-->
+<!--              <i class="ace-icon fa fa-times"></i>-->
+<!--              取消-->
 <!--            </button>-->
-<!--            <button v-on:click="save()" type="button" class="btn btn-primary">-->
-<!--              <i class="ace-icon fa fa-plus blue"></i>保存</button>-->
+<!--            <button type="button" class="btn btn-white btn-info btn-round" v-on:click="updateSort()">-->
+<!--              <i class="ace-icon fa fa-plus blue"></i>-->
+<!--              保存-->
+<!--            </button>-->
 <!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
+<!--        </div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
+<!--      </div>&lt;!&ndash; /.modal-dialog &ndash;&gt;-->
+<!--    </div>&lt;!&ndash; /.modal &ndash;&gt;-->
   </div>
 
 </template>
@@ -277,6 +313,7 @@
           newSort: 0
         },
         teachers : [],
+        files: [],
       }
     },
     mounted: function (){
@@ -324,6 +361,73 @@
           let respd = response.data;
           _this.courses = respd.content.list;
           _this.$refs.pagination.render(page,respd.content.total);
+        })
+      },
+
+      /**
+       * 打开内容编辑器
+       * */
+      // editContent(course){
+      //   let _this = this;
+      //   let id = course.id;
+      //   _this.course = course;
+      //   $("#content").summernote({
+      //     focus: true,
+      //     height: 300
+      //   });
+      //
+      //   //先清空历史文本
+      //   $("#content").summernote('code','');
+      //   _this.saveContentLabel = "";
+      //
+      //   //加载内容文件列表
+      //   _this.listContentFiles();
+      //
+      //   Loading.show();
+      //   _this.$axios.get(process.env.VUE_APP_SERVER+'/business/admin/course/find-content/'+id).then((response)=>{
+      //     Loading.hide();
+      //     let respd = response.data;
+      //
+      //     if (respd.success){
+      //       $("#course-content-modal").modal({backdrop:'static',keyboard:false});
+      //       if(respd.content){
+      //         $("#content").summernote('code',respd.content);
+      //       }
+      //
+      //       //定时自动保存
+      //       let saveContentInterval = setInterval(function () {
+      //         _this.saveContent();
+      //       },5000);
+      //       //关闭内容框时, 清空自动保存任务
+      //       $('#course-content-modal').on('hidden.bs.modal',function (e){
+      //         clearInterval(saveContentInterval);
+      //       })
+      //     }
+      //     else {
+      //       Toast.warning(respd.message);
+      //     }
+      //   });
+      // },
+
+      /**
+       * 保存内容
+       * */
+      saveContent(){
+        let _this = this;
+        let content = $("#content").summernote("code");
+        _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/course/save-content',{
+          id: _this.course.id,
+          content: content
+        }).then((response)=>{
+          Loading.hide();
+          let respd = response.data;
+          if (respd.success){
+            // Toast.success("内容保存成功");
+            let now = Tool.dateFormat("mm:ss");
+            _this.saveContentLabel = "最后保存时间:"+now;
+          }else {
+            Toast.warning(respd.message);
+          }
         })
       },
 
@@ -391,13 +495,22 @@
         _this.$router.push("/business/chapter");
       },
 
+      /**
+       * 点击【内容】
+       */
+      toContent(course) {
+        let _this = this;
+        SessionStorage.set(SESSION_KEY_COURSE, course);
+        _this.$router.push("/business/content");
+      },
+
       allCategory() {
         let _this = this;
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER + '/business/admin/category/all').then((response)=>{
           Loading.hide();
-          let resp = response.data;
-          _this.categorys = resp.content;
+          let respd = response.data;
+          _this.categorys = respd.content;
           _this.initTree();
         })
       },
@@ -479,19 +592,6 @@
           }
         });
       },
-      // editContent(course){
-      //   let _this = this;
-      //   let id = course.id;
-      //   _this.course = course;
-      //   $("#content").summernote({
-      //     focus: true,
-      //     height: 300
-      //   });
-      //   //先清空历史文本
-      //   $("#content").summernote('code','');
-      //   Loading.show();
-      //   _this.$axios.get(process.env.VUE_APP_SERVER + '/business/admin/course/find-content/')
-      // }
 
 
       allTeacher() {
@@ -499,8 +599,8 @@
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER + '/business/admin/teacher/all').then((response)=>{
           Loading.hide();
-          let resp = response.data;
-          _this.teachers = resp.content;
+          let respd = response.data;
+          _this.teachers = respd.content;
         })
       },
 
@@ -509,6 +609,53 @@
         let image = respd.content;
         _this.course.image = image;
       },
+
+      // /**
+      //  * 加载内容文件列表
+      //  * */
+      // listContentFiles(){
+      //   let _this = this;
+      //   _this.$axios.get(process.env.VUE_APP_SERVER+'/business/admin/course-content-file/list/'+ _this.course.id).then((response)=>{
+      //     let respd = response.data;
+      //     if(respd.success){
+      //       _this.files = respd.content;
+      //     }
+      //   });
+      // },
+      //
+      // /**
+      //  * 上传内容文件, 保存内容文件记录
+      //  * */
+      // afterUploadContentFile(response){
+      //   let _this = this;
+      //   console.log("开始保存文件记录");
+      //   let file = response.content;
+      //   file.courseId = _this.course.id;
+      //   file.url = file.path;
+      //   _this.$axios.post(process.env.VUE_APP_SERVER + '/business/admin/course-content-file/save',file).then((response)=>{
+      //     let respd = response.data;
+      //     if (respd.success){
+      //       Toast.success("上传文件成功");
+      //       _this.files.push(respd.content);
+      //     }
+      //   });
+      // },
+      //
+      // /**
+      //  * 删除文件内容
+      //  * */
+      // delFile(f){
+      //   let _this = this;
+      //   Confirm.show("删除课程不可恢复,确认删除？",function (){
+      //     _this.$axios.delete(process.env.VUE_APP_SERVER+'/business/admin/course-content-file/delete/' + f.id).then((response)=>{
+      //       let resp = response.data;
+      //       if (resp.success) {
+      //         Toast.success("删除成功！");
+      //         Tool.removeObj(_this.files,f);
+      //       }
+      //     });
+      //   });
+      // }
     }
   }
 </script>

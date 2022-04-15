@@ -1,6 +1,8 @@
 package com.course.file.controller.admin;
 
+import com.course.server.dto.FileDto;
 import com.course.server.dto.ResponseDto;
+import com.course.server.service.FileService;
 import com.course.server.util.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 @RequestMapping("/admin")
 @RestController
@@ -35,8 +38,8 @@ public class UploadController {
 //    @Value("${vod.accessKeySecret}")
 //    private String accessKeySecret;
 
-//    @Resource
-//    private FileService fileService;
+    @Resource
+    private FileService fileService;
 
     @RequestMapping("/upload")
     public ResponseDto upload(@RequestParam MultipartFile file) throws IOException {
@@ -45,15 +48,27 @@ public class UploadController {
         LOG.info(String.valueOf(file.getSize()));
 
 //        保存文件到本地
-        String fileName = file.getOriginalFilename();
         String key = UuidUtil.getShortUuid();
-        String fullPath = FILE_PATH + "teacher/" + key + "-" + fileName;
+        String fileName = file.getOriginalFilename();
+        String suffix = fileName.substring(fileName.lastIndexOf(".")+1).toLowerCase();
+        String path = "teacher/" + key + "." + suffix;
+
+        String fullPath = FILE_PATH + path;
         File dest = new File(fullPath);
         file.transferTo(dest);
         LOG.info(dest.getAbsolutePath());
 
+        LOG.info("保存文件记录开始");
+        FileDto fileDto = new FileDto();
+        fileDto.setPath(path);
+        fileDto.setName(fileName);
+        fileDto.setSize(Math.toIntExact(file.getSize()));
+        fileDto.setSuffix(suffix);
+        fileDto.setUse("");
+        fileService.save(fileDto);
+
         ResponseDto responseDto = new ResponseDto();
-        responseDto.setContent(FILE_DOMAIN + "teacher/"+key+"-"+fileName);
+        responseDto.setContent(FILE_DOMAIN + path);
         return responseDto;
     }
 //    public ResponseDto upload(@RequestBody FileDto fileDto) throws Exception {

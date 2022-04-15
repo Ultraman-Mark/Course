@@ -521,7 +521,7 @@
       $route: {
         handler:function(val, oldVal){
           // sidebar激活样式方法二
-          console.log("---->页面跳转：", val, oldVal);
+          console.log("---->页面跳转:", val, oldVal);
           let _this = this;
           _this.$nextTick(function(){  //页面加载完成后执行
             _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
@@ -545,12 +545,12 @@
         $("#" + id).addClass("active");
 
         // 如果有父菜单，父菜单的兄弟菜单去掉open active，父菜单增加open active
-        let parentLi = $("#" + id).parents("li");
-        if (parentLi) {
-          parentLi.siblings().removeClass("open active");
-          parentLi.siblings().find("li").removeClass("active");
-          parentLi.addClass("open active");
-        }
+        // let parentLi = $("#" + id).parents("li");
+        // if (parentLi) {
+          // parentLi.siblings().removeClass("open active");
+        //   parentLi.siblings().find("li").removeClass("active");
+        //   parentLi.addClass("open active");
+        // }
       },
     }
   }

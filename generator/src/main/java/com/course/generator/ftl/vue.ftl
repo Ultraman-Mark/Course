@@ -141,11 +141,18 @@
       // this.$parent.$parent.activeSidebar("${module}-${domain}-sidebar");
     },
     methods:{
+      /**
+       * 新增
+       */
       add(){
         let _this = this;
         _this.${domain} = {};
         $("#form-modal").modal("show");
       },
+
+      /**
+       * 编辑
+       */
       edit(${domain}){
         let _this = this;
         _this.${domain} = $.extend({},${domain});

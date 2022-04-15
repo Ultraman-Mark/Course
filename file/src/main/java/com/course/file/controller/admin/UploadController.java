@@ -58,7 +58,7 @@ public class UploadController {
         file.transferTo(dest);
         LOG.info(dest.getAbsolutePath());
 
-        LOG.info("保存文件记录开始");
+        LOG.info("保存文件记录开始" + fullPath);
         FileDto fileDto = new FileDto();
         fileDto.setPath(path);
         fileDto.setName(fileName);

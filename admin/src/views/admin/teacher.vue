@@ -88,7 +88,6 @@
                   <file v-bind:id="'image-upload'"
                             v-bind:text="'上传头像'"
                             v-bind:suffixs="['jpg', 'jpeg', 'png']"
-
                             v-bind:after-upload="afterUpload"></file>
 <!--                  v-bind:use="FILE_USE.TEACHER.key"-->
                   <div v-show="teacher.image" class="row">
@@ -131,7 +130,7 @@
 
 <script>
   import Pagination from "../../components/pagination"
-  import File from "@/components/file";
+  import File from "../../components/file";
   export default {
     components:{File, Pagination},
     name: "business-teacher",
@@ -195,7 +194,6 @@
         ) {
           return;
         }
-        console.log(process.env.VUE_APP_SERVER);
 
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/teacher/save',_this.teacher).then((response)=>{
@@ -229,9 +227,10 @@
         })
       },
 
-      afterUpload(resp) {
+      afterUpload(respd) {
         let _this = this;
-        let image = resp.content.path;
+        let image = respd.content;
+        console.log(image);
         _this.teacher.image = image;
       }
     }

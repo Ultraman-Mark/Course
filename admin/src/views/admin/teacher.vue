@@ -86,10 +86,10 @@
                 <label class="col-sm-2 control-label">头像</label>
                 <div class="col-sm-10">
                   <file v-bind:id="'image-upload'"
-                            v-bind:text="'上传头像'"
-                            v-bind:suffixs="['jpg', 'jpeg', 'png']"
-                            v-bind:after-upload="afterUpload"></file>
-<!--                  v-bind:use="FILE_USE.TEACHER.key"-->
+                        v-bind:text="'上传头像'"
+                        v-bind:suffixs="['jpg', 'jpeg', 'png']"
+                        v-bind:use="FILE_USE.TEACHER.key"
+                        v-bind:after-upload="afterUpload"></file>
                   <div v-show="teacher.image" class="row">
                     <div class="col-md-4">
                       <img v-bind:src="teacher.image" class="img-responsive">
@@ -138,6 +138,7 @@
       return {
         teacher:{},
         teachers: [],
+        FILE_USE: FILE_USE
       }
     },
     mounted: function (){

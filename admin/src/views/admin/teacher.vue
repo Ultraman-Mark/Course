@@ -171,9 +171,9 @@
           size: _this.$refs.pagination.size,
         }).then((response)=>{
           Loading.hide();
-          let respd = response.data;
-          _this.teachers = respd.content.list;
-          _this.$refs.pagination.render(page,respd.content.total);
+          let resp = response.data;
+          _this.teachers = resp.content.list;
+          _this.$refs.pagination.render(page,resp.content.total);
         })
       },
 
@@ -199,13 +199,13 @@
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/teacher/save',_this.teacher).then((response)=>{
           Loading.hide();
-          let respd = response.data;
-          if (respd.success){
+          let resp = response.data;
+          if (resp.success){
             $("#form-modal").modal("hide");
             _this.list(1);
             Toast.success("保存成功");
           } else {
-            Toast.warning(respd.message);
+            Toast.warning(resp.message);
           }
         })
       },
@@ -219,8 +219,8 @@
           Loading.show();
           _this.$axios.delete(process.env.VUE_APP_SERVER+'/business/admin/teacher/delete/'+id).then((response)=>{
             Loading.hide();
-            let respd = response.data;
-            if (respd.success){
+            let resp = response.data;
+            if (resp.success){
               _this.list(1);
               Toast.success("删除成功");
             }
@@ -228,10 +228,10 @@
         })
       },
 
-      afterUpload(respd) {
+      afterUpload(resp) {
         let _this = this;
-        let image = respd.content;
-        console.log(image);
+        console.log(resp.content);
+        let image = resp.content;
         _this.teacher.image = image;
       }
     }

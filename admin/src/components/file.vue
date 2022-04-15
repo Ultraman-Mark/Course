@@ -38,8 +38,9 @@ export default {
       let _this = this;
       let formData = new window.FormData();
       let file = _this.$refs.file.files[0];
+
       //判断文件格式
-      let suffixs = ["jpg","jpeg","png"];
+      let suffixs = _this.suffixs;
       let fileName = file.name;
       let suffix = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length).toLowerCase();
       let validateSuffix = false;
@@ -57,6 +58,7 @@ export default {
 
       // key:"file"必须和后缀controller参数名一致
       formData.append('file',file);
+      formData.append('use',_this.use);
       Loading.show();
       _this.$axios.post(process.env.VUE_APP_SERVER + '/file/admin/upload/' , formData).then((response)=>{
         Loading.hide();

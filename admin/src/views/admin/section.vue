@@ -109,8 +109,21 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">视频</label>
                 <div class="col-sm-10">
-                  <input v-model="section.video" class="form-control">
+                  <file v-bind:id="'video-upload'"
+                       v-bind:text="'上传视频'"
+                       v-bind:suffixs="['mp4']"
+                       v-bind:use="FILE_USE.COURSE.key"
+                       v-bind:after-upload="afterUpload"></file>
+                  <div v-show="section.video" class="row">
+                    <div class="col-md-9">
+                      <video v-bind:src="section.video" id="video" controls="controls"></video>
+                      <!--                      <player v-bind:player-id="'form-player-div'"-->
+                      <!--                              ref="player"></player>-->
+                      <!--                      <video v-bind:src="section.video" id="video" controls="controls" class="hidden"></video>-->
+                    </div>
+                  </div>
                 </div>
+
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label">时长</label>
@@ -147,15 +160,18 @@
 
 
 <script>
-  import Pagination from "../../components/pagination"
+  import Pagination from "../../components/pagination";
+  import File from "../../components/file";
+
   export default {
-    components:{Pagination},
+    components:{Pagination,File},
     name: "business-section",
     data: function (){
       return {
         section: {},
         sections: [],
         SECTION_CHARGE: SECTION_CHARGE,
+        FILE_USE: FILE_USE,
         course: {},
         chapter: {},
       }
@@ -254,6 +270,37 @@
           })
         })
       },
+
+      afterUpload(respd) {
+        let _this = this;
+        let video = respd.content;
+        // let vod = respd.content.vod;
+        _this.section.video = video;
+        // _this.section.vod = vod;
+        _this.getTime();
+        // _this.$refs.player.playUrl(video);
+      },
+
+      /**
+       * 获取时长
+       */
+      getTime() {
+        let _this = this;
+        let ele = document.getElementById("video")
+        _this.section.time = parseInt(ele.duration, 10);
+        // setTimeout(function () {
+        //   let ele = document.getElementById("video");
+        //   _this.section.time = parseInt(ele.duration, 10);
+        // }, 1000);
+      },
     }
   }
 </script>
+
+<style scoped>
+  video {
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+  }
+</style>

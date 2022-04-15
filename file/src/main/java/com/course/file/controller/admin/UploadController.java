@@ -57,12 +57,12 @@ public class UploadController {
         //如果文件夹不存在则创建
         String dir = useEnum.name().toLowerCase();
         File fullDir = new File(FILE_PATH + dir);
-        if(!fullDir.exists()){
+        if (!fullDir.exists()) {
             fullDir.mkdir();
         }
 
-
-        String path = dir + File.separator + key + "." + suffix;
+        LOG.info(dir + File.separator);
+        String path = dir + "/" + key + "." + suffix;
         String fullPath = FILE_PATH + path;
         File dest = new File(fullPath);
         file.transferTo(dest);
@@ -79,6 +79,7 @@ public class UploadController {
 
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(FILE_DOMAIN + path);
+//        responseDto.setContent(fileDto);
         return responseDto;
     }
 //    public ResponseDto upload(@RequestBody FileDto fileDto) throws Exception {

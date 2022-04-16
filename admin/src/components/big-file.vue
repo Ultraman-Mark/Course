@@ -141,7 +141,7 @@ export default {
         let base64 = e.target.result;
         param.shard = base64;
 
-        _this.$axios.post(process.env.VUE_APP_SERVER + '/file/admin/upload/' , param).then((response)=>{
+        _this.$axios.post(process.env.VUE_APP_SERVER + '/file/admin/oss-append/' , param).then((response)=>{
           let resp = response.data;
           console.log("上传文件成功:", resp);
           Progress.show(parseInt(shardIndex  * 100 / shardTotal));

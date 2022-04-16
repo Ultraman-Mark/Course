@@ -74,7 +74,7 @@ export default {
 
       // 文件分片
       let shardSize = 3 * 1024 * 1024;    //以10MB为一个分片
-      let shardIndex = 1;		//分片索引，1表示第1个分片
+      let shardIndex = 2;		//分片索引，1表示第1个分片
       let start = (shardIndex-1) * shardSize;
       let end = Math.min(file.size, start + shardSize);
       let fileShard = file.slice(start,end);
@@ -101,24 +101,53 @@ export default {
     //   _this.check(param);
     // },
 
-      // key:"file"必须和后缀controller参数名一致
-      formData.append('shard',fileShard);
-      formData.append('shardIndex',shardIndex);
-      formData.append('shardSize',shardSize);
-      formData.append('shardTotal',shardTotal);
-      formData.append('use',_this.use);
-      formData.append('name',file.name);
-      formData.append('suffix',suffix);
-      formData.append('size',size);
-      formData.append('key',key62);
-      Loading.show();
-      _this.$axios.post(process.env.VUE_APP_SERVER + '/file/admin/upload/' , formData).then((response)=>{
-        Loading.hide();
-        let resp = response.data;
-        console.log("上传文件成功:", resp);
-        _this.afterUpload(resp);
-        $("#" + _this.inputId + "-input").val("");
-      });
+      // // key:"file"必须和后缀controller参数名一致
+      // formData.append('shard',fileShard);
+      // formData.append('shardIndex',shardIndex);
+      // formData.append('shardSize',shardSize);
+      // formData.append('shardTotal',shardTotal);
+      // formData.append('use',_this.use);
+      // formData.append('name',file.name);
+      // formData.append('suffix',suffix);
+      // formData.append('size',size);
+      // formData.append('key',key62);
+      //
+      // Loading.show();
+      // _this.$axios.post(process.env.VUE_APP_SERVER + '/file/admin/upload/' , formData).then((response)=>{
+      //   Loading.hide();
+      //   let resp = response.data;
+      //   console.log("上传文件成功:", resp);
+      //   _this.afterUpload(resp);
+      //   $("#" + _this.inputId + "-input").val("");
+      // });
+
+      let fileReader = new FileReader();
+      fileReader.onload = function (e){
+        let base64 = e.target.result;
+        console.log("base64:",base64);
+
+        let param = {
+          'shardIndex': shardIndex,
+          'shardSize': shardSize,
+          'shardTotal': shardTotal,
+          'use': _this.use,
+          'name': file.name,
+          'suffix': suffix,
+          'size': file.size,
+          'key': key62
+        };
+
+        Loading.show();
+        _this.$axios.post(process.env.VUE_APP_SERVER + '/file/admin/upload/' , param).then((response)=>{
+          Loading.hide();
+          let resp = response.data;
+          console.log("上传文件成功:", resp);
+          _this.afterUpload(resp);
+          $("#" + _this.inputId + "-input").val("");
+        });
+      };
+
+      fileReader.readAsDataURL(fileShard);
     },
 
     selectFile() {

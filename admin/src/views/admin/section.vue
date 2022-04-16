@@ -227,6 +227,7 @@
       save(page){
         let _this = this;
 
+        _this.section.video = "";
         // 保存校验
         if (1 != 1
           || !Validator.require(_this.section.title, "标题")
@@ -237,7 +238,6 @@
         }
         _this.section.courseId = _this.course.id;
         _this.section.chapterId = _this.chapter.id;
-
 
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/section/save',_this.section).then((response)=>{
@@ -274,11 +274,8 @@
       afterUpload(respd) {
         let _this = this;
         let video = respd.content;
-        // let vod = respd.content.vod;
         _this.section.video = video;
-        // _this.section.vod = vod;
         _this.getTime();
-        // _this.$refs.player.playUrl(video);
       },
 
       /**

@@ -91,11 +91,11 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">封面</label>
                 <div class="col-sm-10">
-                  <file v-bind:input-id="'image-upload'"
+                  <big-file v-bind:input-id="'image-upload'"
                         v-bind:text="'上传封面'"
                         v-bind:suffixs="['jpg', 'jpeg', 'png']"
                         v-bind:use="FILE_USE.COURSE.key"
-                        v-bind:after-upload="afterUpload"></file>
+                        v-bind:after-upload="afterUpload"></big-file>
                   <div v-show="course.image" class="row">
                     <div class="col-md-6">
                       <img v-bind:src="course.image" class="img-responsive">
@@ -227,9 +227,11 @@
 
 <script>
   import Pagination from "../../components/pagination"
-  import File from "../../components/file";
+  import BigFile from "../../components/big-file";
+
+
   export default {
-    components:{Pagination,File},
+    components:{Pagination,BigFile},
     name: "business-course",
     data: function (){
       return {
@@ -299,51 +301,6 @@
           _this.$refs.pagination.render(page,respd.content.total);
         })
       },
-
-      /**
-       * 打开内容编辑器
-       * */
-      // editContent(course){
-      //   let _this = this;
-      //   let id = course.id;
-      //   _this.course = course;
-      //   $("#content").summernote({
-      //     focus: true,
-      //     height: 300
-      //   });
-      //
-      //   //先清空历史文本
-      //   $("#content").summernote('code','');
-      //   _this.saveContentLabel = "";
-      //
-      //   //加载内容文件列表
-      //   _this.listContentFiles();
-      //
-      //   Loading.show();
-      //   _this.$axios.get(process.env.VUE_APP_SERVER+'/business/admin/course/find-content/'+id).then((response)=>{
-      //     Loading.hide();
-      //     let respd = response.data;
-      //
-      //     if (respd.success){
-      //       $("#course-content-modal").modal({backdrop:'static',keyboard:false});
-      //       if(respd.content){
-      //         $("#content").summernote('code',respd.content);
-      //       }
-      //
-      //       //定时自动保存
-      //       let saveContentInterval = setInterval(function () {
-      //         _this.saveContent();
-      //       },5000);
-      //       //关闭内容框时, 清空自动保存任务
-      //       $('#course-content-modal').on('hidden.bs.modal',function (e){
-      //         clearInterval(saveContentInterval);
-      //       })
-      //     }
-      //     else {
-      //       Toast.warning(respd.message);
-      //     }
-      //   });
-      // },
 
       /**
        * 保存内容

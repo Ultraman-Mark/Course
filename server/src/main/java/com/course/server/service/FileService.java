@@ -88,4 +88,8 @@ public class FileService {
             return fileList.get(0);
         }
     }
+
+    public FileDto findByKey(String key) {
+        return CopyUtil.copy(selectByKey(key),FileDto.class);
+    }
 }

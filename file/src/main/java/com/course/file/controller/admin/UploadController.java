@@ -149,62 +149,15 @@ public class UploadController {
         LOG.info("删除分片结束");
     }
 
-//    public void merge(FileDto fileDto) throws Exception {
-//        LOG.info("合并分片开始");
-//        String path = fileDto.getPath(); //http://127.0.0.1:9000/file/f/course\6sfSqfOwzmik4A4icMYuUe.mp4
-//        path = path.replace(FILE_DOMAIN, ""); //course\6sfSqfOwzmik4A4icMYuUe.mp4
-//        Integer shardTotal = fileDto.getShardTotal();
-//        File newFile = new File(FILE_PATH + path);
-//        FileOutputStream outputStream = new FileOutputStream(newFile, true);//文件追加写入
-//        FileInputStream fileInputStream = null;//分片文件
-//        byte[] byt = new byte[10 * 1024 * 1024];
-//        int len;
-//
-//        try {
-//            for (int i = 0; i < shardTotal; i++) {
-//                // 读取第i个分片
-//                fileInputStream = new FileInputStream(new File(FILE_PATH + path + "." + (i + 1))); //  course\6sfSqfOwzmik4A4icMYuUe.mp4.1
-//                while ((len = fileInputStream.read(byt)) != -1) {
-//                    outputStream.write(byt, 0, len);
-//                }
-//            }
-//        } catch (IOException e) {
-//            LOG.error("分片合并异常", e);
-//        } finally {
-//            try {
-//                if (fileInputStream != null) {
-//                    fileInputStream.close();
-//                }
-//                outputStream.close();
-//                LOG.info("IO流关闭");
-//            } catch (Exception e) {
-//                LOG.error("IO流关闭", e);
-//            }
-//        }
-//        LOG.info("合并分片结束");
-//
-//        System.gc();
-//        Thread.sleep(100);
-//
-//        // 删除分片
-//        LOG.info("删除分片开始");
-//        for (int i = 0; i < shardTotal; i++) {
-//            String filePath = FILE_PATH + path + "." + (i + 1);
-//            File file = new File(filePath);
-//            boolean result = file.delete();
-//            LOG.info("删除{}，{}", filePath, result ? "成功" : "失败");
-//        }
-//        LOG.info("删除分片结束");
-//    }
 
-//    @GetMapping("/check/{key}")
-//    public ResponseDto check(@PathVariable String key) throws Exception {
-//        LOG.info("检查上传分片开始：{}", key);
-//        ResponseDto responseDto = new ResponseDto();
-//        FileDto fileDto = fileService.findByKey(key);
-//        if (fileDto != null) {
+    @GetMapping("/check/{key}")
+    public ResponseDto check(@PathVariable String key) throws Exception {
+        LOG.info("检查上传分片开始：{}", key);
+        ResponseDto responseDto = new ResponseDto();
+        FileDto fileDto = fileService.findByKey(key);
+        if (fileDto != null) {
 //            if (StringUtils.isEmpty(fileDto.getVod())) {
-//                fileDto.setPath(OSS_DOMAIN + fileDto.getPath());
+                fileDto.setPath(FILE_DOMAIN + fileDto.getPath());
 //            } else {
 //                DefaultAcsClient vodClient = VodUtil.initVodClient(accessKeyId, accessKeySecret);
 //                GetMezzanineInfoResponse response = VodUtil.getMezzanineInfo(vodClient, fileDto.getVod());
@@ -212,8 +165,8 @@ public class UploadController {
 //                String fileUrl = response.getMezzanine().getFileURL();
 //                fileDto.setPath(fileUrl);
 //            }
-//        }
-//        responseDto.setContent(fileDto);
-//        return responseDto;
-//    }
+        }
+        responseDto.setContent(fileDto);
+        return responseDto;
+    }
 }

@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -79,56 +81,47 @@ public class UploadController {
 
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(FILE_DOMAIN + path);
-//        responseDto.setContent(fileDto);
+        responseDto.setContent(fileDto);
         return responseDto;
     }
-//    public ResponseDto upload(@RequestBody FileDto fileDto) throws Exception {
-//        LOG.info("上传文件开始");
-//        String use = fileDto.getUse();
-//        String key = fileDto.getKey();
-//        String suffix = fileDto.getSuffix();
-//        String shardBase64 = fileDto.getShard();
-//        MultipartFile shard = Base64ToMultipartFile.base64ToMultipart(shardBase64);
-//
-//        // 保存文件到本地
-//        FileUseEnum useEnum = FileUseEnum.getByCode(use);
-//
-//        //如果文件夹不存在则创建
-//        String dir = useEnum.name().toLowerCase();
-//        File fullDir = new File(FILE_PATH + dir);
-//        if (!fullDir.exists()) {
-//            fullDir.mkdir();
-//        }
-//
-////        String path = dir + File.separator + key + "." + suffix + "." + fileDto.getShardIndex();
-//        String path = new StringBuffer(dir)
-//                .append(File.separator)
-//                .append(key)
-//                .append(".")
-//                .append(suffix)
-//                .toString(); // course\6sfSqfOwzmik4A4icMYuUe.mp4
-//        String localPath = new StringBuffer(path)
-//                .append(".")
-//                .append(fileDto.getShardIndex())
-//                .toString(); // course\6sfSqfOwzmik4A4icMYuUe.mp4.1
-//        String fullPath = FILE_PATH + localPath;
-//        File dest = new File(fullPath);
-//        shard.transferTo(dest);
-//        LOG.info(dest.getAbsolutePath());
-//
-//        LOG.info("保存文件记录开始");
-//        fileDto.setPath(path);
-//        fileService.save(fileDto);
-//
-//        ResponseDto responseDto = new ResponseDto();
-//        fileDto.setPath(FILE_DOMAIN + path);
-//        responseDto.setContent(fileDto);
-//
-//        if (fileDto.getShardIndex().equals(fileDto.getShardTotal())) {
-//            this.merge(fileDto);
-//        }
-//        return responseDto;
-//    }
+
+
+    @GetMapping("/merge")
+    public ResponseDto merge() throws Exception{
+        File newFile = new File(FILE_PATH + "/course/test123.mp4");
+        FileOutputStream outputStream = new FileOutputStream(newFile,true);
+        FileInputStream fileInputStream = null;
+
+        byte[] byt = new byte[3*1024*1024];
+        int len;
+        try {
+            fileInputStream = new FileInputStream(new File(FILE_PATH+"/course/Y7gcUGXY.blob"));
+            while ((len = fileInputStream.read(byt))!=-1){
+                outputStream.write(byt,0,len);
+            }
+
+            fileInputStream = new FileInputStream(new File(FILE_PATH+"/course/2ZqJZ8Np.blob"));
+            while ((len = fileInputStream.read(byt))!=-1){
+                outputStream.write(byt,0,len);
+            }
+        }
+        catch (IOException e){
+            LOG.error("分片合并异常",e);
+        }
+        finally {
+            try {
+                if (fileInputStream != null){
+                    fileInputStream.close();
+                }
+                outputStream.close();
+                LOG.info("IO流关闭");
+            }catch (Exception e){
+                LOG.info("IO流关闭",e);
+            }
+        }
+        ResponseDto responseDto = new ResponseDto();
+        return responseDto;
+    }
 
 //    public void merge(FileDto fileDto) throws Exception {
 //        LOG.info("合并分片开始");

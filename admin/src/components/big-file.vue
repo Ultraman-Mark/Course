@@ -124,7 +124,6 @@ export default {
       let fileReader = new FileReader();
       fileReader.onload = function (e){
         let base64 = e.target.result;
-        console.log("base64:",base64);
 
         let param = {
           'shardIndex': shardIndex,

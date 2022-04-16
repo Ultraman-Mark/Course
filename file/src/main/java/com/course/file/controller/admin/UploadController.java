@@ -65,8 +65,13 @@ public class UploadController {
             fullDir.mkdir();
         }
 
-        LOG.info(dir + File.separator);
-        String path = dir + "/" + key + "." + suffix;
+//        String path = dir + "/" + key + "." + suffix + "." + fileDto.getShardIndex();
+        String path = new StringBuffer(dir)
+                .append(File.separator)
+                .append(key)
+                .append(".")
+                .append(suffix)
+                .toString();
         String fullPath = FILE_PATH + path;
         File dest = new File(fullPath);
         shard.transferTo(dest);

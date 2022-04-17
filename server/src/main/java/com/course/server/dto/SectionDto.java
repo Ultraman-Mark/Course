@@ -57,6 +57,11 @@ public class SectionDto {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedAt;
 
+    /**
+     * 阿里云vod
+     * */
+    private String vod;
+
     public String getId() {
         return id;
     }
@@ -137,6 +142,13 @@ public class SectionDto {
         this.updatedAt = updatedAt;
     }
 
+    public String getVod() {
+        return vod;
+    }
+
+    public void setVod(String vod) {
+        this.vod = vod;
+    }
 
     @Override
     public String toString() {
@@ -154,6 +166,7 @@ public class SectionDto {
         sb.append(", sort=").append(sort);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", vod='").append(vod).append('\'');
         sb.append("]");
         return sb.toString();
     }

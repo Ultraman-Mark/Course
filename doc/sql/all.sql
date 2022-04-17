@@ -49,7 +49,7 @@ CREATE TABLE `section`(
 )ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '小节';
 
 ALTER TABLE `section` ADD COLUMN (
-    `vod` CHAR(32) COMMENT 'VOD|阿里云VOD'
+    `vod` CHAR(32) COMMENT 'vod|阿里云vod'
 );
 
 INSERT INTO `section` (id, title, course_id, chapter_id, video, time, charge, sort, created_at, updated_at)
@@ -167,6 +167,8 @@ alter table `file` add column (`shard_size` int comment  '分片大小|B');
 alter table `file` add column (`shard_total` int comment  '分片总数');
 alter table `file` add column (`key` varchar(32) comment  '文件标识');
 alter table `file` add  unique key key_unique(`key`);
+
+alter table `file` add column (`vod` char(32) comment 'vod|阿里云vod');
 
 
 #-------------课程内容文件

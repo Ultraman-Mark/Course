@@ -252,6 +252,7 @@
         _this.section.courseId = _this.course.id;
         _this.section.chapterId = _this.chapter.id;
 
+
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/section/save',_this.section).then((response)=>{
           Loading.hide();
@@ -287,7 +288,9 @@
       afterUpload(resp) {
         let _this = this;
         let video = resp.content;
+        let vod = resp.content.vod;
         _this.section.video = video;
+        _this.section.vod = vod;
         _this.getTime();
       },
 

@@ -38,11 +38,11 @@ public class VodUtil {
      */
     public static CreateUploadVideoResponse createUploadVideo(DefaultAcsClient vodClient,String filename) throws ClientException {
         CreateUploadVideoRequest request = new CreateUploadVideoRequest();
-        request.setFileName("void_test.mp4");
-        request.setTitle("this is title");
+        request.setFileName(filename);
+        request.setTitle(filename);
         //request.setDescription("this is desc");
         //request.setTags("tag1,tag2");
-        request.setCoverURL("http://vod.aliyun.com/test_cover_url.jpg");
+//        request.setCoverURL("http://vod.aliyun.com/test_cover_url.jpg");
         request.setCateId(1000395742L);
         request.setTemplateGroupId("a0bb2fdb0e92004c83d08fc5a2381a6b");
         //request.setWorkflowId("");
@@ -177,9 +177,9 @@ public class VodUtil {
             uploadLocalFile(ossClient, uploadAddress, localFile);
             System.out.println("上传视频成功, VideoId : " + videoId); // 7d6b8c07ab48456e932187080f42e88f
 
-//            GetMezzanineInfoResponse response = new GetMezzanineInfoResponse();
-//            response = getMezzanineInfo(vodClient, videoId);
-//            System.out.println("获取视频信息, response : " + JSON.toJSONString(response));
+            GetMezzanineInfoResponse response = new GetMezzanineInfoResponse();
+            response = getMezzanineInfo(vodClient, videoId);
+            System.out.println("获取视频信息, response : " + JSON.toJSONString(response));
         } catch (Exception e) {
             System.out.println("上传视频失败, ErrorMessage : " + e.getLocalizedMessage());
         }

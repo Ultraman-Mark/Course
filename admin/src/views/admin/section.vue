@@ -109,11 +109,11 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">视频</label>
                 <div class="col-sm-10">
-                  <big-file v-bind:input-id="'video-upload'"
-                       v-bind:text="'上传大视频'"
+                  <vod v-bind:input-id="'video-upload'"
+                       v-bind:text="'上传vod'"
                        v-bind:suffixs="['mp4']"
                        v-bind:use="FILE_USE.COURSE.key"
-                       v-bind:after-upload="afterUpload"></big-file>
+                       v-bind:after-upload="afterUpload"></vod>
                   <div v-show="section.video" class="row">
                     <div class="col-md-9">
                       <video v-bind:src="section.video" id="video" controls="controls"></video>
@@ -174,9 +174,10 @@
 <script>
   import Pagination from "../../components/pagination";
   import BigFile from "../../components/big-file";
+  import Vod from "../../components/vod";
 
   export default {
-    components:{Pagination,BigFile},
+    components:{Vod, Pagination,BigFile},
     name: "business-section",
     data: function (){
       return {
@@ -227,9 +228,9 @@
           chapterId: _this.chapter.id,
         }).then((response)=>{
           Loading.hide();
-          let respd = response.data;
-          _this.sections = respd.content.list;
-          _this.$refs.pagination.render(page,respd.content.total);
+          let resp = response.data;
+          _this.sections = resp.content.list;
+          _this.$refs.pagination.render(page,resp.content.total);
         })
       },
 
@@ -254,13 +255,13 @@
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/section/save',_this.section).then((response)=>{
           Loading.hide();
-          let respd = response.data;
-          if (respd.success){
+          let resp = response.data;
+          if (resp.success){
             $("#form-modal").modal("hide");
             _this.list(1);
             Toast.success("保存成功");
           } else {
-            Toast.warning(respd.message);
+            Toast.warning(resp.message);
           }
         })
       },
@@ -274,8 +275,8 @@
           Loading.show();
           _this.$axios.delete(process.env.VUE_APP_SERVER+'/business/admin/section/delete/'+id).then((response)=>{
             Loading.hide();
-            let respd = response.data;
-            if (respd.success){
+            let resp = response.data;
+            if (resp.success){
               _this.list(1);
               Toast.success("删除成功");
             }
@@ -283,9 +284,9 @@
         })
       },
 
-      afterUpload(respd) {
+      afterUpload(resp) {
         let _this = this;
-        let video = respd.content;
+        let video = resp.content;
         _this.section.video = video;
         _this.getTime();
       },
@@ -295,12 +296,10 @@
        */
       getTime() {
         let _this = this;
-        let ele = document.getElementById("video")
-        _this.section.time = parseInt(ele.duration, 10);
-        // setTimeout(function () {
-        //   let ele = document.getElementById("video");
-        //   _this.section.time = parseInt(ele.duration, 10);
-        // }, 1000);
+        setTimeout(function () {
+          let ele = document.getElementById("video");
+          _this.section.time = parseInt(ele.duration, 10);
+        }, 1000);
       },
     }
   }

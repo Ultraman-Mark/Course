@@ -109,17 +109,16 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">视频</label>
                 <div class="col-sm-10">
-                  <vod v-bind:input-id="'video-upload'"
+                  <big-file v-bind:input-id="'video-upload'"
                        v-bind:text="'上传vod'"
                        v-bind:suffixs="['mp4']"
                        v-bind:use="FILE_USE.COURSE.key"
-                       v-bind:after-upload="afterUpload"></vod>
+                       v-bind:after-upload="afterUpload" @canplay="getVidDur()"></big-file>
                   <div v-show="section.video" class="row">
                     <div class="col-md-9">
+                      <player ref="player"></player>
+<!--                      <player v-bind:player-id="'form-player-div'" ref="player"></player>-->
                       <video v-bind:src="section.video" id="video" controls="controls"></video>
-                      <!--                      <player v-bind:player-id="'form-player-div'"-->
-                      <!--                              ref="player"></player>-->
-                      <!--                      <video v-bind:src="section.video" id="video" controls="controls" class="hidden"></video>-->
                     </div>
                   </div>
                 </div>
@@ -175,9 +174,10 @@
   import Pagination from "../../components/pagination";
   import BigFile from "../../components/big-file";
   import Vod from "../../components/vod";
+  import Player from "../../components/player";
 
   export default {
-    components:{Vod, Pagination,BigFile},
+    components:{Player, Vod, Pagination, BigFile},
     name: "business-section",
     data: function (){
       return {
@@ -204,11 +204,18 @@
       this.$parent.$parent.activeSidebar("business-course-sidebar");
     },
     methods:{
+      /**
+       * 点击【新增】
+       */
       add(){
         let _this = this;
         _this.section = {};
         $("#form-modal").modal("show");
       },
+
+      /**
+       * 点击【编辑】
+       */
       edit(section){
         let _this = this;
         _this.section = $.extend({},section);
@@ -252,7 +259,6 @@
         _this.section.courseId = _this.course.id;
         _this.section.chapterId = _this.chapter.id;
 
-
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/section/save',_this.section).then((response)=>{
           Loading.hide();
@@ -287,11 +293,12 @@
 
       afterUpload(resp) {
         let _this = this;
-        let video = resp.content;
+        let video = resp.content.path;
         let vod = resp.content.vod;
         _this.section.video = video;
         _this.section.vod = vod;
         _this.getTime();
+        _this.$refs.player.playUrl(video);
       },
 
       /**
@@ -303,6 +310,7 @@
           let ele = document.getElementById("video");
           _this.section.time = parseInt(ele.duration, 10);
         }, 1000);
+        console.log("时长:"+_this.section.time);
       },
     }
   }

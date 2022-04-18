@@ -114,7 +114,7 @@ public class UploadController {
         FileOutputStream outputStream = new FileOutputStream(newFile,true);
         FileInputStream fileInputStream = null;
 
-        byte[] byt = new byte[3*1024*1024];
+        byte[] byt = new byte[10*1024*1024];
         int len;
         try {
             for (int i = 0; i < shardTotal; i++) {
@@ -161,8 +161,8 @@ public class UploadController {
         ResponseDto responseDto = new ResponseDto();
         FileDto fileDto = fileService.findByKey(key);
         if (fileDto != null) {
-            if (!StringUtils.hasText(fileDto.getVod())&&StringUtils.hasLength(fileDto.getVod())) {
-                fileDto.setPath(FILE_DOMAIN + fileDto.getPath());
+            if (!StringUtils.hasText(fileDto.getVod())) {
+                fileDto.setPath(OSS_DOMAIN + fileDto.getPath());
             } else {
                 DefaultAcsClient vodClient = VodUtil.initVodClient(accessKeyId, accessKeySecret);
                 GetMezzanineInfoResponse response = VodUtil.getMezzanineInfo(vodClient, fileDto.getVod());

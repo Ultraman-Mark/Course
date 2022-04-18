@@ -40,7 +40,7 @@ export default {
     }
   },
   methods: {
-    uploadFile() {
+    uploadFile () {
       let _this = this;
       let formData = new window.FormData();
       let file = _this.$refs.file.files[0];
@@ -61,30 +61,36 @@ export default {
       let key62 = Tool._10to62(key10);
       console.log(key, key10, key62);
       console.log(hex_md5(Array()));
-      //判断文件格式
+      /*
+        d41d8cd98f00b204e9800998ecf8427e
+        2.8194976848941264e+38
+        6sfSqfOwzmik4A4icMYuUe
+       */
+
+      // 判断文件格式
       let suffixs = _this.suffixs;
       let fileName = file.name;
-      let suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length).toLowerCase();
+      let suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length).toString().toLowerCase();
       let validateSuffix = false;
       for (let i = 0; i < suffixs.length; i++) {
-        if (suffixs[i].toLowerCase() === suffix) {
+        if (suffixs[i].toString().toLowerCase() === suffix) {
           validateSuffix = true;
           break;
         }
       }
       if (!validateSuffix) {
-        Toast.warning("文件格式不正确！只支持上传:" + suffixs.join(","));
+        Toast.warning("文件格式不正确！只支持上传：" + suffixs.join(","));
         $("#" + _this.inputId + "-input").val("");
         return;
       }
 
       // 文件分片
-      // let shardSize = 10 * 1024 * 1024;    //以3MB为一个分片
+      // let shardSize = 10 * 1024 * 1024;    //以10MB为一个分片
+      // let shardSize = 50 * 1024;    //以50KB为一个分片
       let shardSize = _this.shardSize;
       let shardIndex = 1;		//分片索引，1表示第1个分片
-
       let size = file.size;
-      let shardTotal = Math.ceil(size / shardSize);
+      let shardTotal = Math.ceil(size / shardSize); //总片数
 
       let param = {
         'shardIndex': shardIndex,
@@ -99,6 +105,8 @@ export default {
 
       _this.check(param);
     },
+
+
 
     /**
      * 检查文件状态，是否已上传过？传到第几个分片？
@@ -133,30 +141,31 @@ export default {
     /**
      * 将分片数据转成base64进行上传
      */
-    upload (param){
+    upload (param) {
       let _this = this;
       let shardIndex = param.shardIndex;
       let shardTotal = param.shardTotal;
       let shardSize = param.shardSize;
       let fileShard = _this.getFileShard(shardIndex, shardSize);
-      //将图片转为basr64进行传输
+      // 将图片转为base64进行传输
       let fileReader = new FileReader();
 
       Progress.show(parseInt((shardIndex - 1) * 100 / shardTotal));
-
-      fileReader.onload = function (e){
+      fileReader.onload = function (e) {
         let base64 = e.target.result;
+        // console.log("base64:", base64);
+
         param.shard = base64;
 
-        _this.$axios.post(process.env.VUE_APP_SERVER + '/file/admin/' + _this.url, param).then((response)=>{
+        _this.$axios.post(process.env.VUE_APP_SERVER + '/file/admin/' + _this.url, param).then((response) => {
           let resp = response.data;
-          console.log("上传文件成功:", resp);
-          Progress.show(parseInt(shardIndex  * 100 / shardTotal));
-          if(shardIndex<shardTotal){
-            //上传下一个分片
+          console.log("上传文件成功：", resp);
+          Progress.show(parseInt(shardIndex * 100 / shardTotal));
+          if (shardIndex < shardTotal) {
+            // 上传下一个分片
             param.shardIndex = param.shardIndex + 1;
             _this.upload(param);
-          }else {
+          } else {
             Progress.hide();
             _this.afterUpload(resp);
             $("#" + _this.inputId + "-input").val("");
@@ -166,17 +175,16 @@ export default {
       fileReader.readAsDataURL(fileShard);
     },
 
-    getFileShard(shardIndex, shardSize) {
+    getFileShard (shardIndex, shardSize) {
       let _this = this;
       let file = _this.$refs.file.files[0];
-      let start = (shardIndex - 1) * shardSize;
-      let end = Math.min(file.size, start + shardSize);
-      console.log("start:"+start+" end:"+end);
-      let fileShard = file.slice(start, end);
+      let start = (shardIndex - 1) * shardSize;	//当前分片起始位置
+      let end = Math.min(file.size, start + shardSize); //当前分片结束位置
+      let fileShard = file.slice(start, end); //从文件中截取当前的分片数据
       return fileShard;
     },
 
-    selectFile() {
+    selectFile () {
       let _this = this;
       $("#" + _this.inputId + "-input").trigger("click");
     }

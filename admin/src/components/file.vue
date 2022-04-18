@@ -42,10 +42,10 @@ export default {
       //判断文件格式
       let suffixs = _this.suffixs;
       let fileName = file.name;
-      let suffix = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length).toLowerCase();
+      let suffix = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length).toString().toLowerCase();
       let validateSuffix = false;
       for (let i=0;i<suffixs.length;i++){
-        if(suffixs[i].toLowerCase() === suffix){
+        if(suffixs[i].toString().toLowerCase() === suffix){
           validateSuffix = true;
           break;
         }

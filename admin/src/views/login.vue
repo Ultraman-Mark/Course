@@ -25,17 +25,17 @@
                     <form>
                       <fieldset>
                         <label class="block clearfix">
-                                                            <span class="block input-icon input-icon-right">
-                                                                <input type="text" class="form-control" placeholder="Username" />
-                                                                <i class="ace-icon fa fa-user"></i>
-                                                            </span>
+                          <span class="block input-icon input-icon-right">
+                            <input v-model="user.loginName" type="text" class="form-control" placeholder="用户名" />
+                            <i class="ace-icon fa fa-user"></i>
+                          </span>
                         </label>
 
                         <label class="block clearfix">
-                                                            <span class="block input-icon input-icon-right">
-                                                                <input type="password" class="form-control" placeholder="Password" />
-                                                                <i class="ace-icon fa fa-lock"></i>
-                                                            </span>
+                          <span class="block input-icon input-icon-right">
+                            <input v-model="user.password" type="password" class="form-control" placeholder="密码" />
+                            <i class="ace-icon fa fa-lock"></i>
+                          </span>
                         </label>
 
                         <div class="space"></div>
@@ -73,13 +73,31 @@
 <script>
   export default {
     name: "login",
+    data: function (){
+      return {
+        user: {},
+        users: [],
+      }
+    },
     mounted: function (){
       $("body").removeClass("no-skin");
       $("body").attr("class", "login-layout light-login");
     },
     methods:{
       login(){
-        this.$router.push("/welcome")
+        let _this = this;
+        _this.user.password = hex_md5(_this.user.password + KEY);
+        Loading.show();
+        _this.$axios.post(process.env.VUE_APP_SERVER + '/system/admin/user/login', _this.user).then((response)=>{
+          Loading.hide();
+          let resp = response.data;
+          if (resp.success) {
+            console.log(resp.content);
+            _this.$router.push("/welcome");
+          } else {
+            Toast.warning(resp.message);
+          }
+        });
       }
     }
   }

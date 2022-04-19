@@ -1,5 +1,6 @@
 package com.course.system.controller.admin;
 
+import com.course.server.dto.LoginUserDto;
 import com.course.server.dto.UserDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
@@ -71,6 +72,46 @@ public class UserController {
         ResponseDto responseDto = new ResponseDto();
         userService.savePassword(userDto);
         responseDto.setContent(userDto);
+        return responseDto;
+    }
+
+    /**
+     * 登录
+     */
+    @PostMapping("/login")
+    public ResponseDto login(@RequestBody UserDto userDto) {
+        LOG.info("用户登录开始");
+        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
+        ResponseDto responseDto = new ResponseDto();
+        LoginUserDto loginUserDto = userService.login(userDto);
+
+        // 根据验证码token去获取缓存中的验证码，和用户输入的验证码是否一致
+        // String imageCode = (String) request.getSession().getAttribute(userDto.getImageCodeToken());
+//        String imageCode = (String) redisTemplate.opsForValue().get(userDto.getImageCodeToken());
+//        LOG.info("从redis中获取到的验证码：{}", imageCode);
+//        if (StringUtils.isEmpty(imageCode)) {
+//            responseDto.setSuccess(false);
+//            responseDto.setMessage("验证码已过期");
+//            LOG.info("用户登录失败，验证码已过期");
+//            return responseDto;
+//        }
+//        if (!imageCode.toLowerCase().equals(userDto.getImageCode().toLowerCase())) {
+//            responseDto.setSuccess(false);
+//            responseDto.setMessage("验证码不对");
+//            LOG.info("用户登录失败，验证码不对");
+//            return responseDto;
+//        } else {
+//            // 验证通过后，移除验证码
+////            request.getSession().removeAttribute(userDto.getImageCodeToken());
+//            redisTemplate.delete(userDto.getImageCodeToken());
+//        }
+//
+//        LoginUserDto loginUserDto = userService.login(userDto);
+//        String token = UuidUtil.getShortUuid();
+//        loginUserDto.setToken(token);
+////        request.getSession().setAttribute(Constants.LOGIN_USER, loginUserDto);
+//        redisTemplate.opsForValue().set(token, JSON.toJSONString(loginUserDto), 3600, TimeUnit.SECONDS);
+        responseDto.setContent(loginUserDto);
         return responseDto;
     }
 }

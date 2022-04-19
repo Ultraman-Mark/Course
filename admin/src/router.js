@@ -20,7 +20,10 @@ const router = createRouter({
         {
             path:"/:pathMatch(.*)",
             component: Login,
-        }, {
+        },{
+            path:"",
+            component: Login,
+        },,{
             path:"/login",
             component: Login,
         },{

@@ -353,7 +353,7 @@
         </div><!-- /.sidebar-shortcuts -->
 
         <ul class="nav nav-list">
-          <li class="" id="welcome-sidebar">
+          <li class="active open" id="welcome-sidebar">
             <router-link to="/welcome">
               <i class="menu-icon fa fa-tachometer"></i>
               <span class="menu-text"> 欢迎 </span>
@@ -362,7 +362,7 @@
             <b class="arrow"></b>
           </li>
 
-          <li  class="active open">
+          <li class="active open">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 系统管理 </span>
@@ -373,7 +373,7 @@
             <b class="arrow"></b>
 
             <ul class="submenu">
-              <li class="active" id="system-user-sidebar">
+              <li class="" id="system-user-sidebar">
                 <router-link to="/system/user">
                   <i class="menu-icon fa fa-caret-right"></i>
                   用户管理
@@ -404,7 +404,7 @@
             <b class="arrow"></b>
 
             <ul class="submenu">
-              <li class="active" id="business-category-sidebar">
+              <li class="" id="business-category-sidebar">
                 <router-link to="/business/category">
                   <i class="menu-icon fa fa-caret-right"></i>
                   分类管理
@@ -412,7 +412,7 @@
 
                 <b class="arrow"></b>
               </li>
-              <li class="active" id="business-course-sidebar">
+              <li class="" id="business-course-sidebar">
                 <router-link to="/business/course">
                   <i class="menu-icon fa fa-caret-right"></i>
                   课程管理
@@ -442,7 +442,7 @@
             <b class="arrow"></b>
 
             <ul class="submenu">
-              <li class="active" id="file-file-sidebar">
+              <li class="" id="file-file-sidebar">
                 <router-link to="/file/file">
                   <i class="menu-icon fa fa-caret-right"></i>
                   文件管理
@@ -514,8 +514,11 @@
       let _this = this;
       $("body").removeClass("login-layout light-login");
       $("body").attr("class", "no-skin");
+
       //sidebar激活样式方法二
       _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
+
+      $.getScript('/ace/assets/js/ace.min.js');
     },
     watch: {
       $route: {
@@ -523,6 +526,7 @@
           // sidebar激活样式方法二
           console.log("---->页面跳转:", val, oldVal);
           let _this = this;
+
           _this.$nextTick(function(){  //页面加载完成后执行
             _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
           })
@@ -547,9 +551,10 @@
         // 如果有父菜单，父菜单的兄弟菜单去掉open active，父菜单增加open active
         // let parentLi = $("#" + id).parents("li");
         // if (parentLi) {
-          // parentLi.siblings().removeClass("open active");
+        //   parentLi.siblings().removeClass("open active");
         //   parentLi.siblings().find("li").removeClass("active");
         //   parentLi.addClass("open active");
+        //   console.log(parentLi);
         // }
       },
     }

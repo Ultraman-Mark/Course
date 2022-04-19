@@ -1,9 +1,6 @@
 package com.course.system.controller.admin;
 
-import com.course.server.dto.LoginUserDto;
-import com.course.server.dto.UserDto;
-import com.course.server.dto.PageDto;
-import com.course.server.dto.ResponseDto;
+import com.course.server.dto.*;
 import com.course.server.service.UserService;
 
 import com.course.server.util.ValidatorUtil;
@@ -13,6 +10,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/admin/user")
@@ -79,7 +77,7 @@ public class UserController {
      * 登录
      */
     @PostMapping("/login")
-    public ResponseDto login(@RequestBody UserDto userDto) {
+    public ResponseDto login(@RequestBody UserDto userDto, HttpServletRequest request) {
         LOG.info("用户登录开始");
         userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
         ResponseDto responseDto = new ResponseDto();
@@ -109,9 +107,19 @@ public class UserController {
 //        LoginUserDto loginUserDto = userService.login(userDto);
 //        String token = UuidUtil.getShortUuid();
 //        loginUserDto.setToken(token);
-////        request.getSession().setAttribute(Constants.LOGIN_USER, loginUserDto);
+        request.getSession().setAttribute(Constants.LOGIN_USER, loginUserDto);
 //        redisTemplate.opsForValue().set(token, JSON.toJSONString(loginUserDto), 3600, TimeUnit.SECONDS);
         responseDto.setContent(loginUserDto);
+        return responseDto;
+    }
+
+    /**
+     * 退出登录
+     */
+    @GetMapping("/logout")
+    public ResponseDto logout(HttpServletRequest request) {
+        ResponseDto responseDto = new ResponseDto();
+        request.getSession().removeAttribute(Constants.LOGIN_USER);
         return responseDto;
     }
 }

@@ -8,7 +8,8 @@ create table `test`(
 
 insert into `test` (id,name) value (1,'测试');
 
-# 章节
+
+#------------章节
 drop table if exists `chapter`;
 create table `chapter`(
   `id` char(8) not null comment 'ID',
@@ -31,6 +32,7 @@ insert into `chapter` (id, course_id, name) VALUE ('00000011','00000000','测试
 insert into `chapter` (id, course_id, name) VALUE ('00000012','00000000','测试大章12');
 insert into `chapter` (id, course_id, name) VALUE ('00000013','00000000','测试大章13');
 insert into `chapter` (id, course_id, name) VALUE ('00000014','00000000','测试大章14');
+
 
 #----------小节
 DROP TABLE IF EXISTS `section`;
@@ -55,6 +57,7 @@ ALTER TABLE `section` ADD COLUMN (
 INSERT INTO `section` (id, title, course_id, chapter_id, video, time, charge, sort, created_at, updated_at)
 VALUES ('00000001','测试小节01','00000001','00000000','',500,'F',1,now(),now());
 
+
 #----------课程
 drop table if exists `course`;
 create table `course`(
@@ -73,6 +76,7 @@ create table `course`(
      updated_at datetime(3) comment '修改时间',
      primary key (id)
 )engine=innodb default charset = utf8mb4 comment = '课程表';
+
 
 #---------分类
 drop table if exists `category`;
@@ -115,6 +119,7 @@ insert into `category` (id, parent, name, sort) VALUES ('00000500','00000000','�
 insert into `category` (id, parent, name, sort) VALUES ('00000501','00000500','大数据',501);
 insert into `category` (id, parent, name, sort) VALUES ('00000502','00000500','hadoop',502);
 
+
 #--------------课程分类
 drop table if exists `course_category`;
 create table `course_category`(
@@ -124,6 +129,7 @@ create table `course_category`(
     primary key (`id`)
 )engine = innodb default charset = utf8mb4 comment = '课程分类';
 
+
 #-------------课程内容
 drop table if exists `course_content`;
 create table `course_content`(
@@ -131,6 +137,7 @@ create table `course_content`(
     `content` mediumtext not null comment '课程内容',
     primary key (`id`)
 ) engine = innodb default charset = utf8mb4 comment = '课程内容';
+
 
 #-------------讲师
 drop table if exists `teacher`;
@@ -181,3 +188,16 @@ create table `course_content_file`(
     `size` int comment '大小|字节b',
     primary key (`id`)
 )engine=innodb default charset=utf8mb4 comment '课程内容文件';
+
+
+#----------------用户
+drop table if exists `user`;
+create table `user` (
+    `id` char(8) not null default '' comment 'id',
+    `login_name` varchar(50) not null comment '登录名',
+    `name` varchar(50) comment '昵称',
+    `password` char(32) not null comment '密码',
+    primary key (`id`),
+    unique key `login_name_unique` (`login_name`)
+) engine = innodb default charset = utf8mb4 comment '用户';
+insert into `user` (id, login_name, name, password) VALUES ('10000000','test','测试','202cb962ac59075b964b07152d234b70');

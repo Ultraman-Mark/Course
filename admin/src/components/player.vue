@@ -25,13 +25,13 @@ export default {
       //如果已经有播放器了，则将播放器div删除
       if (_this.aliPlayer) {
         _this.aliPlayer = null;
-        $("#J_prismPlayer").remove();
+        $("#" + _this.playerId + '-player').remove();
       }
 
       // 初始化播放器
-      $("#" + _this.playerId).append("<div class=\"prism-player\" id=\"J_prismPlayer\"></div>");
+      $("#" + _this.playerId).append("<div class=\"prism-player\" id=\"" + _this.playerId + "-player\"></div>");
       _this.aliPlayer = new Aliplayer({
-        id: "J_prismPlayer",
+        id: _this.playerId + '-player',
         height: "400px",
         width: '100%',
         autoplay: false,
@@ -42,39 +42,37 @@ export default {
       });
     },
 
-    // playVod (vod) {
-    //   let _this = this;
-    //   Loading.show();
-    //   _this.$axios.get(process.env.VUE_APP_SERVER + '/file/admin/get-auth/' + vod).then((response)=>{
-    //     Loading.hide();
-    //     let resp = response.data;
-    //     if (resp.success) {
-    //       //如果已经有播放器了，则将播放器div删除
-    //       if (_this.aliPlayer) {
-    //         _this.aliPlayer = null;
-    //         $("#" + _this.playerId + '-player').remove();
-    //       }
-    //
-    //       // 初始化播放器
-    //       $("#" + _this.playerId).append("<div class=\"prism-player\" id=\"" + _this.playerId + "-player\"></div>");
-    //       _this.aliPlayer = new Aliplayer({
-    //         id: _this.playerId + '-player',
-    //         width: '100%',
-    //         autoplay: false,
-    //         social: url,
-    //         // vid: vod,
-    //         // playauth: resp.content,
-    //         cover: 'http://liveroom-img.oss-cn-qingdao.aliyuncs.com/logo.png',
-    //         // encryptType:1, //当播放私有加密流时需要设置。
-    //       },function(player){
-    //         console.log('播放器创建好了。')
-    //       });
-    //     } else {
-    //       Toast.warning('播放错误。')
-    //     }
-    //   })
-    //
-    // }
+    playVod (vod) {
+      let _this = this;
+      Loading.show();
+      _this.$axios.get(process.env.VUE_APP_SERVER + '/file/admin/get-auth/' + vod).then((response) => {
+        Loading.hide();
+        let resp = response.data;
+        if (resp.success) {
+          //如果已经有播放器了，则将播放器div删除
+          if (_this.aliPlayer) {
+            _this.aliPlayer = null;
+            $("#" + _this.playerId + '-player').remove();
+          }
+
+          // 初始化播放器
+          $("#" + _this.playerId).append("<div class=\"prism-player\" id=\"" + _this.playerId + "-player\"></div>");
+          _this.aliPlayer = new Aliplayer({
+            id: _this.playerId + '-player',
+            width: '100%',
+            autoplay: false,
+            vid: vod,
+            playauth: resp.content,
+            cover: 'http://liveroom-img.oss-cn-qingdao.aliyuncs.com/logo.png',
+            encryptType: 1, //当播放私有加密流时需要设置。
+          }, function (player) {
+            console.log('播放器创建好了。')
+          });
+        } else {
+          Toast.warning('播放错误。')
+        }
+      })
+    }
   }
 }
 </script>

@@ -15,8 +15,13 @@ app.config.globalProperties.$axios = axios
 axios.interceptors.request.use(
     function (config) {
         console.log("请求:",config);
+        let token = Tool.getLoginUser().token;
+        if(Tool.isNotEmpty(token)){
+            config.headers.token = token;
+            console.log("请求headersz增加token:",token);
+        }
         return config;
-    }, error => {});
+    }, error => {return error});
 
 axios.interceptors.response.use(
      function (response) {
@@ -24,6 +29,22 @@ axios.interceptors.response.use(
     return response;
 },error => {return error;});
 
+// 路由登录拦截
+router.beforeEach((to, from, next) => {
+    // 要不要对meta.loginRequire属性做监控拦截
+    if (to.matched.some(function (item) {
+        return item.meta.loginRequire
+    })) {
+        let loginUser = Tool.getLoginUser();
+        if (Tool.isEmpty(loginUser)) {
+            next('/login');
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
+});
 
 // 全局过滤器
 app.config.globalProperties.$filters = {

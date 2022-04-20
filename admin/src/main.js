@@ -22,9 +22,8 @@ axios.interceptors.response.use(
      function (response) {
     console.log("返回:",response);
     return response;
-},error => {
-         return error;
-    });
+},error => {return error;});
+
 
 // 全局过滤器
 app.config.globalProperties.$filters = {

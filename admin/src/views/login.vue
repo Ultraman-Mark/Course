@@ -38,6 +38,17 @@
                           </span>
                         </label>
 
+                        <label class="block clearfix">
+                          <span class="block input-icon input-icon-right">
+                            <div class="input-group">
+                              <input v-model="user.imageCode" type="text" class="form-control" placeholder="验证码">
+                              <span class="input-group-addon" id="basic-addon2">
+                                <img v-on:click="loadImageCode()" id="image-code" alt="验证码"/>
+                              </span>
+                            </div>
+                          </span>
+                        </label>
+
                         <div class="space"></div>
 
                         <div class="clearfix">
@@ -88,7 +99,7 @@
       if (rememberUser) {
         _this.user = rememberUser;
       }
-
+      _this.loadImageCode();
     },
     methods:{
       login(){
@@ -104,14 +115,16 @@
           _this.user.password = hex_md5(_this.user.password + KEY);
         }
 
+        _this.user.imageCodeToken = _this.imageCodeToken;
+
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER + '/system/admin/user/login', _this.user).then((response)=>{
           Loading.hide();
           let resp = response.data;
           if (resp.success) {
-            console.log(resp.content);
-            let loinUser = resp.content;
-            Tool.setLoginUser(loinUser);
+            console.log("登录成功：", resp.content);
+            let loginUser = resp.content;
+            Tool.setLoginUser(resp.content);
 
             //"记住我"判断
             if (_this.remember) {
@@ -120,7 +133,7 @@
               // 新：这里保存密码密文，并保存密文md5，用于检测密码是否被重新输入过
               let md5 = hex_md5(_this.user.password);
               LocalStorage.set(LOCAL_KEY_REMEMBER_USER, {
-                loginName: loinUser.loginName,
+                loginName: loginUser.loginName,
                 password: _this.user.password,
                 md5: md5,
               });
@@ -130,10 +143,26 @@
             _this.$router.push("/welcome");
           } else {
             Toast.warning(resp.message);
+            _this.user.password = "";
+            _this.loadImageCode();
           }
         });
-      }
+      },
+
+      /**
+       * 加载图形验证码
+       */
+      loadImageCode: function () {
+        let _this = this;
+        _this.imageCodeToken = Tool.uuid(8);
+        $('#image-code').attr('src', process.env.VUE_APP_SERVER + '/system/admin/kaptcha/image-code/' + _this.imageCodeToken);
+      },
     }
   }
 </script>
 
+<style scoped>
+  .input-group-addon {
+    padding: 0;
+  }
+</style>

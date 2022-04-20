@@ -30,6 +30,7 @@ const router = createRouter({
             path:"/",
             name:"admin",
             component:Admin,
+
             children:[{
                 path:"welcome",
                 name:"welcome",

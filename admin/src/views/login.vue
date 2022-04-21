@@ -93,6 +93,7 @@
     },
     mounted: function (){
       let _this = this;
+
       $("body").removeClass("no-skin");
       $("body").attr("class", "login-layout light-login");
       let rememberUser = LocalStorage.get(LOCAL_KEY_REMEMBER_USER);

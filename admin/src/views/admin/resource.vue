@@ -54,7 +54,7 @@
       /**
        * 列表查询
        */
-      list(page){
+      list(){
         let _this = this;
         Loading.show();
         _this.$axios.get(process.env.VUE_APP_SERVER+'/system/admin/resource/load-tree').then((response)=>{
@@ -78,6 +78,8 @@
           return;
         }
         let json = JSON.parse(_this.resourceStr);
+
+        console.log(json);
 
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER + '/system/admin/resource/save', json).then((response)=>{

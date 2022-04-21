@@ -6,7 +6,7 @@
       "children": [
         {"id": "010101","name": "保存","request": ["/system/admin/user/list","/system/admin/user/save"]},
         {"id": "010102","name": "删除","request": ["/system/admin/user/delete"]},
-        {"id": "010101","name": "重置密码","request": ["/system/admin/user/save-password"]}
+        {"id": "010103","name": "重置密码","request": ["/system/admin/user/save-password"]}
       ]
     },{
       "id": "0102","name": "资源管理","page": "/system/resource",
@@ -20,9 +20,7 @@
       ]
     }
   ]
-},
-
-  {
+}, {
   "id": "02","name": "业务管理",
   "children": [{
     "id": "0201","name": "分类管理","page": "/business/category",
@@ -35,9 +33,7 @@
       {"id": "020201","name": "增删改查","request": ["/business/admin/course","/business/admin/category/all"]}
     ]
   }]
-},
-
-  {
+}, {
   "id": "03","name": "文件管理",
   "children": [{
     "id": "0301","name": "文件管理","page": "/file/file",

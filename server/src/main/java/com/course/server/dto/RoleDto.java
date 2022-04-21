@@ -20,7 +20,15 @@ public class RoleDto {
      */
     private String desc;
 
+    /**
+     * 关联id
+     */
     private List<String> resourceIds;
+
+    /**
+     * 关联id
+     */
+    private List<String> userIds;
 
     public String getId() {
         return id;
@@ -54,6 +62,14 @@ public class RoleDto {
         this.resourceIds = resourceIds;
     }
 
+    public List<String> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<String> userIds) {
+        this.userIds = userIds;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -64,6 +80,7 @@ public class RoleDto {
         sb.append(", name=").append(name);
         sb.append(", desc=").append(desc);
         sb.append(", resourceIds=").append(resourceIds);
+        sb.append(", userIds=").append(userIds);
         sb.append("]");
         return sb.toString();
     }

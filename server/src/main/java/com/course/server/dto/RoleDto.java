@@ -1,6 +1,8 @@
 package com.course.server.dto;
 
 
+import java.util.List;
+
 public class RoleDto {
 
     /**
@@ -17,6 +19,8 @@ public class RoleDto {
      * 描述
      */
     private String desc;
+
+    private List<String> resourceIds;
 
     public String getId() {
         return id;
@@ -42,6 +46,13 @@ public class RoleDto {
         this.desc = desc;
     }
 
+    public List<String> getResourceIds() {
+        return resourceIds;
+    }
+
+    public void setResourceIds(List<String> resourceIds) {
+        this.resourceIds = resourceIds;
+    }
 
     @Override
     public String toString() {
@@ -52,6 +63,7 @@ public class RoleDto {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", desc=").append(desc);
+        sb.append(", resourceIds=").append(resourceIds);
         sb.append("]");
         return sb.toString();
     }

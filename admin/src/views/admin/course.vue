@@ -229,7 +229,6 @@
   import Pagination from "../../components/pagination"
   import BigFile from "../../components/big-file";
 
-
   export default {
     components:{Pagination,BigFile},
     name: "business-course",

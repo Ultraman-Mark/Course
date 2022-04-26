@@ -45,32 +45,32 @@
               <div class="tab-pane active" id="info" v-html="course.content">
               </div>
               <div class="tab-pane" id="chapter">
-<!--                <div v-for="(chapter, i) in chapters" class="chapter">-->
-<!--                  <div v-on:click="doFolded(chapter, i)" class="chapter-chapter">-->
-<!--                    <span>{{chapter.name}}</span>-->
-<!--                    <span class="pull-right">-->
-<!--                      <i v-show="chapter.folded" class="fa fa-plus-square" aria-hidden="true"></i>-->
-<!--                      <i v-show="!chapter.folded" class="fa fa-minus-square" aria-hidden="true"></i>-->
-<!--                    </span>-->
-<!--                  </div>-->
-<!--                  <div v-show="!chapter.folded">-->
-<!--                    <table class="table table-striped">-->
-<!--                      <tr v-for="(s, j) in chapter.sections" class="chapter-section-tr">-->
-<!--                        <td class="col-sm-8 col-xs-12">-->
-<!--                          <div v-on:click="play(s)" class="section-title">-->
-<!--                            <i class="fa fa-video-camera d-none d-sm-inline"></i>&nbsp;&nbsp;-->
-<!--                            <span class="d-none d-sm-inline">第{{j+1}}节&nbsp;&nbsp;</span>-->
-<!--                            {{s.title}}-->
+                <div v-for="(chapter, i) in chapters" class="chapter">
+                  <div v-on:click="doFolded(chapter, i)" class="chapter-chapter">
+                    <span>{{chapter.name}}</span>
+                    <span class="pull-right">
+                       <i v-show="chapter.folded" class="fa fa-plus-square" aria-hidden="true"></i>
+                      <i v-show="!chapter.folded" class="fa fa-minus-square" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                  <div v-show="!chapter.folded">
+                    <table class="table table-striped">
+                      <tr v-for="(s, j) in chapter.sections" class="chapter-section-tr">
+                        <td class="col-sm-8 col-xs-12">
+                          <div v-on:click="play(s)" class="section-title">
+                            <i class="fa fa-video-camera d-none d-sm-inline"></i>&nbsp;&nbsp;
+                            <span class="d-none d-sm-inline">第{{j+1}}节&nbsp;&nbsp;</span>
+                            {{s.title}}
 <!--                            <span v-show="s.charge !== SECTION_CHARGE.CHARGE.key" class="badge badge-primary hidden-xs">免费</span>-->
-<!--                          </div>-->
-<!--                        </td>-->
-<!--                        <td class="col-sm-1 text-right">-->
-<!--                          <span class="badge badge-primary">{{s.time | formatSecond}}</span>-->
-<!--                        </td>-->
-<!--                      </tr>-->
-<!--                    </table>-->
-<!--                  </div>-->
-<!--                </div>-->
+                          </div>
+                        </td>
+                        <td class="col-sm-1 text-right">
+                          <span class="badge badge-primary">{{ $filters.formatSecond(s.time)}}</span>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -122,7 +122,31 @@
           _this.teacher = _this.course.teacher || {};
           _this.chapters = _this.course.chapters || [];
           _this.sections = _this.course.sections || [];
+
+          // 将所有的节放入对应的章中
+          for (let i = 0; i < _this.chapters.length; i++) {
+            let c = _this.chapters[i];
+            c.sections = [];
+            for (let j = 0; j < _this.sections.length; j++) {
+              let s = _this.sections[j];
+              if (c.id === s.chapterId) {
+                c.sections.push(s);
+              }
+            }
+            // Tool.sortAsc(c.sections, "sort");
+          }
         })
+      },
+
+      /**
+       * 展开/收缩一个章节
+       * @param chapter
+       */
+      doFolded (chapter, i) {
+        let _this = this;
+        chapter.folded = !chapter.folded;
+        // vue3 使用代理方式，已经舍弃$set方法了
+        // _this.$set(_this.chapters, i, chapter);
       },
     }
   }

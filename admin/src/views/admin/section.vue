@@ -191,6 +191,7 @@
         FILE_USE: FILE_USE,
         course: {},
         chapter: {},
+        charge: {}
       }
     },
     mounted: function (){

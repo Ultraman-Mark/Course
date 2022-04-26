@@ -25,8 +25,8 @@ public class SectionService {
     @Resource
     private SectionMapper sectionMapper;
 
-    @Resource
-    private CourseService courseService;
+//    @Resource
+//    private CourseService courseService;
 
     /**
     * 列表查询
@@ -55,6 +55,9 @@ public class SectionService {
 //    @Transactional(rollbackFor = Exception.class)  //Exception异常回滚
     @Transactional
     public void save(SectionDto sectionDto){
+
+        CourseService courseService = new CourseService();
+
         Section section = CopyUtil.copy(sectionDto,Section.class);
         if (!StringUtils.hasText(sectionDto.getId())){
             this.insert(section);
@@ -90,5 +93,13 @@ public class SectionService {
      */
     public void delete(String id) {
         sectionMapper.deleteByPrimaryKey(id);
+    }
+
+    public List<SectionDto> listByCourse(String id) {
+        SectionExample example = new SectionExample();
+        example.createCriteria().andCourseIdEqualTo(id);
+        List<Section> sectionList = sectionMapper.selectByExample(example);
+        List<SectionDto> sectionDtoList = CopyUtil.copyList(sectionList, SectionDto.class);
+        return sectionDtoList;
     }
 }

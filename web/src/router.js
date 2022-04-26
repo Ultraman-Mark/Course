@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router"; //和vue2 路由不同
 import Index from "./views/index.vue"
 import List from "./views/list.vue"
+import Detail from "./views/detail.vue"
 
 const routerHistory = createWebHistory();
 
@@ -17,6 +18,9 @@ const router = createRouter({
     },{
         path:"/list",
         component:List
+    },{
+        path:"/detail",
+        component:Detail
     }]
 })
 

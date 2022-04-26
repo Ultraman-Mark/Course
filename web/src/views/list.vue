@@ -48,6 +48,9 @@
           // categoryId: _this.level2Id || _this.level1Id || "", // 优先取level2Id
         }).then((response) => {
           let resp = response.data;
+
+          console.log(resp);
+
           if (resp.success) {
             _this.courses = resp.content.list;
             _this.$refs.pagination.render(page, resp.content.total);

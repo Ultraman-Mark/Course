@@ -48,9 +48,9 @@ public class CourseService {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
         CourseExample courseExample = new CourseExample();
         CourseExample.Criteria criteria = courseExample.createCriteria();
-        if (StringUtils.hasText(pageDto.getStatus())){
-            criteria.andChargeEqualTo(pageDto.getStatus());
-        }
+//        if (StringUtils.hasText(pageDto.getStatus())){
+//            criteria.andChargeEqualTo(pageDto.getStatus());
+//        }
         courseExample.setOrderByClause("sort asc");
         List<Course> courseList = courseMapper.selectByExample(courseExample);
         PageInfo<Course> pageInfo = new PageInfo<>(courseList);

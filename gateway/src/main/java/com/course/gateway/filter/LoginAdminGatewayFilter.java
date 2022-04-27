@@ -53,10 +53,10 @@ public class LoginAdminGatewayFilter implements GatewayFilter, Ordered {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         } else {
-//            LOG.info("已登录：{}", object);
+            LOG.info("已登录：{}", object);
 
             // 增加权限校验，gateway里没有LoginUserDto，所以全部用JSON操作
-            LOG.info("path:{}", path);
+            LOG.info("接口权限校验，请求地址：{}", path);
             boolean exist = false;
             JSONObject loginUserDto = JSON.parseObject(String.valueOf(object));
             JSONArray requests = loginUserDto.getJSONArray("requests");

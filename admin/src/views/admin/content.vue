@@ -92,7 +92,7 @@ export default {
     _this.init();
 
     // sidebar激活样式方法一
-    this.$parent.activeSidebar("business-course-sidebar");
+    // this.$parent.activeSidebar("business-course-sidebar");
 
   },
   destroyed: function() {

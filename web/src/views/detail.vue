@@ -89,14 +89,18 @@
         </div>
       </div>
     </div>
+
+    <modal-player ref="modalPlayer"></modal-player>
   </main>
 </template>
 
 <script>
   import course from "../../../admin/src/views/admin/course";
+  import ModalPlayer from "@/components/modal-player";
 
   export default {
     name: 'detail',
+    components: {ModalPlayer},
     data: function (){
       return{
         id: "",
@@ -148,6 +152,19 @@
         // vue3 使用代理方式，已经舍弃$set方法了
         // _this.$set(_this.chapters, i, chapter);
       },
+
+      /**
+       * 播放视频
+       * @param section
+       */
+      play(section) {
+        let _this = this;
+        if (section.charge === _this.SECTION_CHARGE.CHARGE.key){
+          Toast.warning("请先登录");
+        } else {
+          _this.$refs.modalPlayer.playVod(section.vod);
+        }
+      }
     }
   }
 </script>

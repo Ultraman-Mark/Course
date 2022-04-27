@@ -295,9 +295,9 @@
           size: _this.$refs.pagination.size,
         }).then((response)=>{
           Loading.hide();
-          let respd = response.data;
-          _this.courses = respd.content.list;
-          _this.$refs.pagination.render(page,respd.content.total);
+          let resp = response.data;
+          _this.courses = resp.content.list;
+          _this.$refs.pagination.render(page,resp.content.total);
         })
       },
 
@@ -312,13 +312,13 @@
           content: content
         }).then((response)=>{
           Loading.hide();
-          let respd = response.data;
-          if (respd.success){
+          let resp = response.data;
+          if (resp.success){
             // Toast.success("内容保存成功");
             let now = Tool.dateFormat("mm:ss");
             _this.saveContentLabel = "最后保存时间:"+now;
           }else {
-            Toast.warning(respd.message);
+            Toast.warning(resp.message);
           }
         })
       },
@@ -349,13 +349,13 @@
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/course/save',_this.course).then((response)=>{
           Loading.hide();
-          let respd = response.data;
-          if (respd.success){
+          let resp = response.data;
+          if (resp.success){
             $("#form-modal").modal("hide");
             _this.list(1);
             Toast.success("保存成功");
           } else {
-            Toast.warning(respd.message);
+            Toast.warning(resp.message);
           }
         })
       },
@@ -369,8 +369,8 @@
           Loading.show();
           _this.$axios.delete(process.env.VUE_APP_SERVER+'/business/admin/course/delete/'+id).then((response)=>{
             Loading.hide();
-            let respd = response.data;
-            if (respd.success){
+            let resp = response.data;
+            if (resp.success){
               _this.list(1);
               Toast.success("删除成功");
             }
@@ -401,8 +401,8 @@
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER + '/business/admin/category/all').then((response)=>{
           Loading.hide();
-          let respd = response.data;
-          _this.categorys = respd.content;
+          let resp = response.data;
+          _this.categorys = resp.content;
           _this.initTree();
         })
       },
@@ -491,63 +491,17 @@
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER + '/business/admin/teacher/all').then((response)=>{
           Loading.hide();
-          let respd = response.data;
-          _this.teachers = respd.content;
+          let resp = response.data;
+          _this.teachers = resp.content;
         })
       },
 
-      afterUpload(respd) {
+      afterUpload(resp) {
         let _this = this;
-        let image = respd.content;
+        let image = resp.content;
         _this.course.image = image;
       },
 
-      // /**
-      //  * 加载内容文件列表
-      //  * */
-      // listContentFiles(){
-      //   let _this = this;
-      //   _this.$axios.get(process.env.VUE_APP_SERVER+'/business/admin/course-content-file/list/'+ _this.course.id).then((response)=>{
-      //     let respd = response.data;
-      //     if(respd.success){
-      //       _this.files = respd.content;
-      //     }
-      //   });
-      // },
-      //
-      // /**
-      //  * 上传内容文件, 保存内容文件记录
-      //  * */
-      // afterUploadContentFile(response){
-      //   let _this = this;
-      //   console.log("开始保存文件记录");
-      //   let file = response.content;
-      //   file.courseId = _this.course.id;
-      //   file.url = file.path;
-      //   _this.$axios.post(process.env.VUE_APP_SERVER + '/business/admin/course-content-file/save',file).then((response)=>{
-      //     let respd = response.data;
-      //     if (respd.success){
-      //       Toast.success("上传文件成功");
-      //       _this.files.push(respd.content);
-      //     }
-      //   });
-      // },
-      //
-      // /**
-      //  * 删除文件内容
-      //  * */
-      // delFile(f){
-      //   let _this = this;
-      //   Confirm.show("删除课程不可恢复,确认删除？",function (){
-      //     _this.$axios.delete(process.env.VUE_APP_SERVER+'/business/admin/course-content-file/delete/' + f.id).then((response)=>{
-      //       let resp = response.data;
-      //       if (resp.success) {
-      //         Toast.success("删除成功！");
-      //         Tool.removeObj(_this.files,f);
-      //       }
-      //     });
-      //   });
-      // }
     }
   }
 </script>

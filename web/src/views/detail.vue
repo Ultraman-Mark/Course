@@ -19,7 +19,7 @@
             </p>
             <p class="course-head-button-links">
               <a v-show="!memberCourse.id" v-on:click="enroll()" class="btn btn-lg btn-primary btn-shadow" href="javascript:;">立即报名</a>
-<!--              <a v-show="memberCourse.id" href="#" class="btn btn-lg btn-success btn-shadow disabled">立即报名</a>-->
+              <a v-show="memberCourse.id" href="#" class="btn btn-lg btn-success btn-shadow disabled">您已报名</a>
             </p>
           </div>
         </div>
@@ -61,7 +61,7 @@
                             <i class="fa fa-video-camera d-none d-sm-inline"></i>&nbsp;&nbsp;
                             <span class="d-none d-sm-inline">第{{j+1}}节&nbsp;&nbsp;</span>
                             {{s.title}}
-<!--                            <span v-show="s.charge !== SECTION_CHARGE.CHARGE.key" class="badge badge-primary hidden-xs">免费</span>-->
+                            <span v-show="s.charge !== SECTION_CHARGE.CHARGE.key" class="badge badge-primary hidden-xs">免费</span>
                           </div>
                         </td>
                         <td class="col-sm-1 text-right">
@@ -110,6 +110,7 @@
         sections: [],
         memberCourse: {},
         COURSE_LEVEL: course.level,
+        SECTION_CHARGE: SECTION_CHARGE
       }
     },
     mounted() {
@@ -127,6 +128,9 @@
           _this.chapters = _this.course.chapters || [];
           _this.sections = _this.course.sections || [];
 
+          //获取报名信息
+          _this.getEnroll();
+
           // 将所有的节放入对应的章中
           for (let i = 0; i < _this.chapters.length; i++) {
             let c = _this.chapters[i];
@@ -137,7 +141,7 @@
                 c.sections.push(s);
               }
             }
-            // Tool.sortAsc(c.sections, "sort");
+            Tool.sortAsc(c.sections, "sort");
           }
         })
       },
@@ -160,11 +164,67 @@
       play(section) {
         let _this = this;
         if (section.charge === _this.SECTION_CHARGE.CHARGE.key){
-          Toast.warning("请先登录");
-        } else {
-          _this.$refs.modalPlayer.playVod(section.vod);
+          let loginMember = Tool.getLoginMember();
+
+          console.log("登录名"+loginMember);
+
+          if (Tool.isEmpty(loginMember)) {
+            Toast.warning("请先登录");
+            return;
+          } else {
+            if (Tool.isEmpty(_this.memberCourse)) {
+              Toast.warning("请先报名");
+              return;
+            }
+          }
         }
-      }
+        _this.$refs.modalPlayer.playVod(section.vod);
+      },
+
+      /**
+       * 报名
+       */
+      enroll() {
+        let _this = this;
+        let loginMember = Tool.getLoginMember();
+        if (Tool.isEmpty(loginMember)) {
+          Toast.warning("请先登录");
+          return;
+        }
+        _this.$axios.post(process.env.VUE_APP_SERVER + '/business/web/member-course/enroll', {
+          courseId: _this.course.id,
+          memberId: loginMember.id
+        }).then((response)=>{
+          let resp = response.data;
+          if (resp.success) {
+            _this.memberCourse = resp.content;
+            Toast.success("报名成功！");
+          } else {
+            Toast.warning(resp.message);
+          }
+        });
+      },
+
+      /**
+       * 获取报名
+       */
+      getEnroll() {
+        let _this = this;
+        let loginMember = Tool.getLoginMember();
+        if (Tool.isEmpty(loginMember)) {
+          console.log("未登录");
+          return;
+        }
+        _this.$axios.post(process.env.VUE_APP_SERVER + '/business/web/member-course/get-enroll', {
+          courseId: _this.course.id,
+          memberId: loginMember.id
+        }).then((response)=>{
+          let resp = response.data;
+          if (resp.success) {
+            _this.memberCourse = resp.content || {};
+          }
+        });
+      },
     }
   }
 </script>

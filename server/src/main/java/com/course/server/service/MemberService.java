@@ -87,7 +87,7 @@ public class MemberService {
      * @return
      */
     public Member selectByMobile(String mobile) {
-        if (StringUtils.isEmpty(mobile)) {
+        if (!StringUtils.hasText(mobile)) {
             return null;
         }
         MemberExample example = new MemberExample();
@@ -119,6 +119,31 @@ public class MemberService {
                 LOG.info("密码不对, 输入密码：{}, 数据库密码：{}", memberDto.getPassword(), member.getPassword());
                 throw new BusinessException(BusinessExceptionCode.LOGIN_MEMBER_ERROR);
             }
+        }
+    }
+
+    /**
+     * 按手机号查找
+     * @param mobile
+     * @return
+     */
+    public MemberDto findByMobile(String mobile) {
+        Member member = this.selectByMobile(mobile);
+        return CopyUtil.copy(member, MemberDto.class);
+    }
+
+    /**
+     * 重置密码
+     */
+    public void resetPassword(MemberDto memberDto) throws BusinessException {
+        Member memberDb = this.selectByMobile(memberDto.getMobile());
+        if (memberDb == null) {
+            throw new BusinessException(BusinessExceptionCode.MEMBER_NOT_EXIST);
+        } else {
+            Member member = new Member();
+            member.setId(memberDb.getId());
+            member.setPassword(memberDto.getPassword());
+            memberMapper.updateByPrimaryKeySelective(member);
         }
     }
 }

@@ -4,7 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.course.server.dto.LoginMemberDto;
 import com.course.server.dto.MemberDto;
 import com.course.server.dto.ResponseDto;
+import com.course.server.dto.SmsDto;
+import com.course.server.enums.SmsUseEnum;
+import com.course.server.exception.BusinessException;
 import com.course.server.service.MemberService;
+import com.course.server.service.SmsService;
 import com.course.server.util.UuidUtil;
 import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
@@ -30,8 +34,8 @@ public class MemberController {
     @Resource(name = "redisTemplate")
     private RedisTemplate redisTemplate;
 
-//    @Resource
-//    private SmsService smsService;
+    @Resource
+    private SmsService smsService;
     /**
      * 保存，id有值时更新，无值时新增
      */
@@ -47,13 +51,13 @@ public class MemberController {
         // 密码加密
         memberDto.setPassword(DigestUtils.md5DigestAsHex(memberDto.getPassword().getBytes()));
 
-//        // 校验短信验证码
-//        SmsDto smsDto = new SmsDto();
-//        smsDto.setMobile(memberDto.getMobile());
-//        smsDto.setCode(memberDto.getSmsCode());
-//        smsDto.setUse(SmsUseEnum.REGISTER.getCode());
-//        smsService.validCode(smsDto);
-//        LOG.info("短信验证码校验通过");
+        // 校验短信验证码
+        SmsDto smsDto = new SmsDto();
+        smsDto.setMobile(memberDto.getMobile());
+        smsDto.setCode(memberDto.getSmsCode());
+        smsDto.setUse(SmsUseEnum.REGISTER.getCode());
+        smsService.validCode(smsDto);
+        LOG.info("短信验证码校验通过");
 
         ResponseDto responseDto = new ResponseDto();
         memberService.save(memberDto);
@@ -105,6 +109,46 @@ public class MemberController {
         ResponseDto responseDto = new ResponseDto();
         redisTemplate.delete(token);
         LOG.info("从redis中删除token:{}", token);
+        return responseDto;
+    }
+
+    /**
+     * 校验手机号是否存在
+     * 存在则success=true，不存在则success=false
+     */
+    @GetMapping(value = "/is-mobile-exist/{mobile}")
+    public ResponseDto isMobileExist(@PathVariable(value = "mobile") String mobile) throws BusinessException {
+        LOG.info("查询手机号是否存在开始");
+        ResponseDto responseDto = new ResponseDto();
+        MemberDto memberDto = memberService.findByMobile(mobile);
+        if (memberDto == null) {
+            responseDto.setSuccess(false);
+        } else {
+            responseDto.setSuccess(true);
+        }
+        return responseDto;
+    }
+
+    /**
+     * 重置密码
+     * */
+    @PostMapping("/reset-password")
+    public ResponseDto resetPassword(@RequestBody MemberDto memberDto) throws BusinessException {
+        LOG.info("会员密码重置开始:");
+        memberDto.setPassword(DigestUtils.md5DigestAsHex(memberDto.getPassword().getBytes()));
+        ResponseDto<MemberDto> responseDto = new ResponseDto();
+
+        // 校验短信验证码
+        SmsDto smsDto = new SmsDto();
+        smsDto.setMobile(memberDto.getMobile());
+        smsDto.setCode(memberDto.getSmsCode());
+        smsDto.setUse(SmsUseEnum.FORGET.getCode());
+        smsService.validCode(smsDto);
+        LOG.info("短信验证码校验通过");
+
+        // 重置密码
+        memberService.resetPassword(memberDto);
+
         return responseDto;
     }
 }

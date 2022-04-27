@@ -116,4 +116,30 @@ public class SmsService {
 
         // TODO 调第三方短信接口发送短信
     }
+
+    /**
+     * 验证码5分钟内有效，且操作类型要一致
+     * @param smsDto
+     */
+    public void validCode(SmsDto smsDto) {
+        SmsExample example = new SmsExample();
+        SmsExample.Criteria criteria = example.createCriteria();
+        // 查找5分钟内同手机号同操作发送记录
+        criteria.andMobileEqualTo(smsDto.getMobile()).andUseEqualTo(smsDto.getUse()).andAtGreaterThan(new Date(new Date().getTime() - 5 * 60 * 1000));
+        List<Sms> smsList = smsMapper.selectByExample(example);
+
+        if (smsList != null && smsList.size() > 0) {
+            Sms smsDb = smsList.get(0);
+            if (!smsDb.getCode().equals(smsDto.getCode())) {
+                LOG.warn("短信验证码不正确");
+                throw new BusinessException(BusinessExceptionCode.MOBILE_CODE_ERROR);
+            } else {
+                smsDto.setStatus(SmsStatusEnum.USED.getCode());
+                smsMapper.updateByPrimaryKey(smsDb);
+            }
+        } else {
+            LOG.warn("短信验证码不存在或已过期，请重新发送短信");
+            throw new BusinessException(BusinessExceptionCode.MOBILE_CODE_EXPIRED);
+        }
+    }
 }

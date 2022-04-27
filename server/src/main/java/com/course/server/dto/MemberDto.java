@@ -36,6 +36,16 @@ public class MemberDto {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date registerTime;
 
+    /**
+     * 图片验证码
+     */
+    private String imageCode;
+
+    /**
+     * 图片验证码token
+     */
+    private String imageCodeToken;
+
     public String getId() {
         return id;
     }
@@ -84,6 +94,21 @@ public class MemberDto {
         this.registerTime = registerTime;
     }
 
+    public String getImageCode() {
+        return imageCode;
+    }
+
+    public void setImageCode(String imageCode) {
+        this.imageCode = imageCode;
+    }
+
+    public String getImageCodeToken() {
+        return imageCodeToken;
+    }
+
+    public void setImageCodeToken(String imageCodeToken) {
+        this.imageCodeToken = imageCodeToken;
+    }
 
     @Override
     public String toString() {
@@ -97,6 +122,8 @@ public class MemberDto {
         sb.append(", name=").append(name);
         sb.append(", photo=").append(photo);
         sb.append(", registerTime=").append(registerTime);
+        sb.append(", imageCode='").append(imageCode).append('\'');
+        sb.append(", imageCodeToken='").append(imageCodeToken).append('\'');
         sb.append("]");
         return sb.toString();
     }

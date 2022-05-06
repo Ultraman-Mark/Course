@@ -38,7 +38,7 @@ public class UploadController {
 
     @Value("${oss.domain}")
     private String OSS_DOMAIN;
-//
+
     @Value("${file.path}")
     private String FILE_PATH;
 
@@ -163,7 +163,7 @@ public class UploadController {
             if (!StringUtils.hasText(fileDto.getVod())) {
                 fileDto.setPath(OSS_DOMAIN + fileDto.getPath());
             } else {
-                DefaultAcsClient vodClient = VodUtil.initVodClient(accessKeyId, accessKeySecret);
+                DefaultAcsClient vodClient = VodUtil.initVodClient("LTAI5t8QHuQ98MSCpEfVifjZ", "SIHvMxDoK6A5eIMF47NURwPhojAN8l");
                 GetMezzanineInfoResponse response = VodUtil.getMezzanineInfo(vodClient, fileDto.getVod());
                 System.out.println("获取视频信息, response : " + JSON.toJSONString(response));
                 String fileUrl = response.getMezzanine().getFileURL();

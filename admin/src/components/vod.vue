@@ -9,29 +9,29 @@
 </template>
 
 <script>
-import BigFile from "./big-file";
-export default {
-  components: {BigFile},
-  name: 'vod',
-  props: {
-    text: {
-      default: "上传VOD"
+  import BigFile from "./big-file";
+  export default {
+    components: {BigFile},
+    name: 'vod',
+    props: {
+      text: {
+        default: "上传VOD"
+      },
+      inputId: {
+        default: "vod-upload"
+      },
+      suffixs: {
+        default: []
+      },
+      use: {
+        default: ""
+      },
+      afterUpload: {
+        type: Function,
+        default: null
+      },
     },
-    inputId: {
-      default: "vod-upload"
-    },
-    suffixs: {
-      default: []
-    },
-    use: {
-      default: ""
-    },
-    afterUpload: {
-      type: Function,
-      default: null
-    },
-  },
-  methods: {
+    methods: {
+    }
   }
-}
 </script>

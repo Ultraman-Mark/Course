@@ -76,11 +76,11 @@ public class OssController {
                 .append(key)
                 .append(".")
                 .append(suffix)
-                .toString(); // course\6sfSqfOwzmik4A4icMYuUe.mp4
+                .toString(); // course\xxxx.mp4
 //        String localPath = new StringBuffer(path)
 //                .append(".")
 //                .append(fileDto.getShardIndex())
-//                .toString(); // course\6sfSqfOwzmik4A4icMYuUe.mp4.1
+//                .toString(); // course\xxxx.mp4.1
 //        String fullPath = FILE_PATH + localPath;
 //        File dest = new File(fullPath);
 //        shard.transferTo(dest);

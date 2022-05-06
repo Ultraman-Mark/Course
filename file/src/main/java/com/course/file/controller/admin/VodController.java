@@ -2,6 +2,7 @@ package com.course.file.controller.admin;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
@@ -42,7 +43,7 @@ public class VodController {
 
     @PostMapping("/vod")
     public ResponseDto fileUpload(@RequestBody FileDto fileDto) throws Exception {
-        LOG.info("上传文件开始");
+        LOG.info("上传文件开始:"+accessKeyId+":"+accessKeySecret);
         String use = fileDto.getUse();
         String key = fileDto.getKey();
         String suffix = fileDto.getSuffix();
@@ -93,6 +94,7 @@ public class VodController {
             OSSClient ossClient = VodUtil.initOssClient(uploadAuth, uploadAddress);
             // 上传文件，注意是同步上传会阻塞等待，耗时与文件大小和网络上行带宽有关
             VodUtil.uploadLocalFile(ossClient, uploadAddress, shard.getInputStream());
+
             LOG.info("上传视频成功, vod : " + vod);
             GetMezzanineInfoResponse response = VodUtil.getMezzanineInfo(vodClient, vod);
             System.out.println("获取视频信息, response : " + JSON.toJSONString(response));

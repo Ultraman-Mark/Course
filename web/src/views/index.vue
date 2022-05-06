@@ -58,13 +58,12 @@
       listNew() {
         let _this = this;
 
-        // // 新上好课不经常变，又经常被访问，适合用缓存
-        // // 判断是否有缓存
-        // let news = SessionStorage.get("news");
-        // if (!Tool.isEmpty(news)) {
-        //   _this.news = news;
-        //   return;
-        // }
+        // 判断是否有缓存
+        let news = SessionStorage.get("news");
+        if (!Tool.isEmpty(news)) {
+          _this.news = news;
+          return;
+        }
 
         _this.$axios.get(process.env.VUE_APP_SERVER + '/business/web/course/list-new').then((response)=>{
           console.log("查询新上好课结果：", response);

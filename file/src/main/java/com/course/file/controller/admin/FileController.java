@@ -39,10 +39,10 @@ public class FileController {
     @PostMapping("/save")
     public ResponseDto save(@RequestBody FileDto fileDto){
         // 保存校验
-                ValidatorUtil.require(fileDto.getPath(), "相对路径");
-                ValidatorUtil.length(fileDto.getPath(), "相对路径", 1, 100);
-                ValidatorUtil.length(fileDto.getName(), "文件名", 1, 100);
-                ValidatorUtil.length(fileDto.getSuffix(), "后缀", 1, 10);
+        ValidatorUtil.require(fileDto.getPath(), "相对路径");
+        ValidatorUtil.length(fileDto.getPath(), "相对路径", 1, 100);
+        ValidatorUtil.length(fileDto.getName(), "文件名", 1, 100);
+        ValidatorUtil.length(fileDto.getSuffix(), "后缀", 1, 10);
 
         ResponseDto responseDto = new ResponseDto();
         fileService.save(fileDto);

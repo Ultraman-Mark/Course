@@ -32,7 +32,7 @@
   },{
     "id": "0202","name": "课程管理","page": "business/course",
     "children": [
-      {"id": "020201","name": "增删改查","request": ["/business/admin/course","/business/admin/course-content-file","/business/admin/category/all"]}
+      {"id": "020201","name": "增删改查","request": ["/business/admin/course","/business/admin/category/all"]}
     ]
   },{
     "id": "0203","name": "教师管理","page": "business/teacher",
@@ -40,24 +40,29 @@
       {"id": "020301","name": "增删改查","request": ["/business/admin/teacher"]}
     ]
   },{
-    "id": "0204","name": "章节管理","page": "business/chapter",
+    "id": "0204","name": "会员管理","page": "business/member",
     "children": [
-      {"id": "020401","name": "增删改查","request": ["/business/admin/chapter"]}
+      {"id": "020401","name": "增删改查","request": ["/business/admin/member"]}
     ]
   },{
-    "id": "0205","name": "小节管理","page": "business/section",
+    "id": "0205","name": "短信管理","page": "business/sms",
     "children": [
-      {"id": "020501","name": "增删改查","request": ["/business/admin/section"]}
+      {"id": "020501","name": "增删改查","request": ["/business/admin/sms"]}
     ]
   },{
-    "id": "0206","name": "会员管理","page": "business/member",
+    "id": "0206","name": "大章管理","page": "business/chapter",
     "children": [
-      {"id": "020601","name": "增删改查","request": ["/business/admin/member"]}
+      {"id": "020601","name": "增删改查","request": ["/business/admin/chapter"]}
     ]
   },{
-    "id": "0207","name": "短信管理","page": "business/sms",
+    "id": "0207","name": "小节管理","page": "business/section",
     "children": [
-      {"id": "020701","name": "增删改查","request": ["/business/admin/sms"]}
+      {"id": "020701","name": "增删改查","request": ["/business/admin/section"]}
+    ]
+  },{
+    "id": "0208","name": "内容管理","page": "business/content",
+    "children": [
+      {"id": "020801","name": "增删改查","request": ["/business/admin/course","/business/admin/course-content-file"]}
     ]
   }]
 }, {

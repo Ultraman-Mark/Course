@@ -232,10 +232,11 @@
 
       afterUpload(resp) {
         let _this = this;
-        console.log(resp.content);
-        let image = resp.content;
+        let image = resp.content.path;
         _this.teacher.image = image;
+        console.log("image:");
         console.log(image);
+        console.log("end");
       }
     }
   }

@@ -55,9 +55,7 @@ public class SectionService {
 //    @Transactional(rollbackFor = Exception.class)  //Exception异常回滚
     @Transactional
     public void save(SectionDto sectionDto){
-
         CourseService courseService = new CourseService();
-
         Section section = CopyUtil.copy(sectionDto,Section.class);
         if (!StringUtils.hasText(sectionDto.getId())){
             this.insert(section);

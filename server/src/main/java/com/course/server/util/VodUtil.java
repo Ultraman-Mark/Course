@@ -2,18 +2,26 @@ package com.course.server.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.FormatType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.vod.model.v20170321.*;
+import com.course.server.enums.AccessKey;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.InputStream;
 
 public class VodUtil {
+
+    private static final Logger LOG = LoggerFactory.getLogger(VodUtil.class);
 
     /**
      * 使用AK初始化VOD客户端
@@ -64,8 +72,7 @@ public class VodUtil {
         String endpoint = uploadAddress.getString("Endpoint");
         String accessKeyId = uploadAuth.getString("AccessKeyId");
         String accessKeySecret = uploadAuth.getString("AccessKeySecret");
-        String securityToken = uploadAuth.getString("SecurityToken");
-        return new OSSClient(endpoint, accessKeyId, accessKeySecret, securityToken);
+        return new OSSClient(endpoint, accessKeyId, accessKeySecret);
     }
 
     /**
@@ -78,7 +85,8 @@ public class VodUtil {
         String bucketName = uploadAddress.getString("Bucket");
         String objectName = uploadAddress.getString("FileName");
         // 单文件上传
-        ossClient.putObject(bucketName, objectName, inputStream);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, objectName, inputStream);
+        ossClient.putObject(putObjectRequest);
 
         /* 视频点播不支持追加上传
         // 追加上传
@@ -100,7 +108,8 @@ public class VodUtil {
         String objectName = uploadAddress.getString("FileName");
         File file = new File(localFile);
         // 单文件上传
-        ossClient.putObject(bucketName, objectName, file);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, objectName, new File(localFile));
+        ossClient.putObject(putObjectRequest);
 
         /* 视频点播不支持追加上传
         // 追加上传
@@ -154,10 +163,13 @@ public class VodUtil {
     }
 
     public static void main(String[] argv) {
-        //您的AccessKeyId
-        String accessKeyId = "LTAI5t7iHqZoHm5H5p5kJ1NM";
-        //您的AccessKeySecret
-        String accessKeySecret = "tTrerFOjCgAwWJMdvTjowuxXcYYYED";
+        //直接换成您的AccessKeyId即可
+        String accessKeyId = AccessKey.KeyId.getKey();
+        LOG.info("accessKeyId"+accessKeyId);
+        //直接换成您的AccessKeySecret
+        String accessKeySecret = AccessKey.Secret.getValue();
+        LOG.info("accessKeySecret:"+accessKeySecret);
+
         //需要上传到VOD的本地视频文件的完整路径，需要包含文件扩展名
         String localFile = "C:\\Users\\22786\\Videos\\Captures\\test2.mp4";
         try {

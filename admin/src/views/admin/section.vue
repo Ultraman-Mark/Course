@@ -264,6 +264,9 @@
         _this.section.courseId = _this.course.id;
         _this.section.chapterId = _this.chapter.id;
 
+        console.log("save:")
+        console.log(_this.section);
+
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/section/save',_this.section).then((response)=>{
           Loading.hide();
@@ -298,7 +301,6 @@
 
       afterUpload(resp) {
         let _this = this;
-        console.log(resp);
         let video = resp.content.path;
         let vod = resp.content.vod;
         _this.section.video = video;
@@ -316,7 +318,8 @@
           let ele = document.getElementById("video");
           _this.section.time = parseInt(ele.duration, 10);
         }, 1000);
-        console.log("时长:"+_this.section.time);
+        console.log("时长:");
+        console.log(_this.section.time);
       },
 
       /**

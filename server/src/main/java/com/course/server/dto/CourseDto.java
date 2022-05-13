@@ -239,12 +239,14 @@ public class CourseDto {
         this.teacher = teacher;
     }
 
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("CourseDto{");
         sb.append("id='").append(id).append('\'');
         sb.append(", name='").append(name).append('\'');
         sb.append(", summary='").append(summary).append('\'');
+        sb.append(", time=").append(time);
         sb.append(", time=").append(time);
         sb.append(", price=").append(price);
         sb.append(", image='").append(image).append('\'');
@@ -258,7 +260,7 @@ public class CourseDto {
         sb.append(", categorys=").append(categorys);
         sb.append(", chapters=").append(chapters);
         sb.append(", sections=").append(sections);
-        sb.append(", content='略'");
+        sb.append(", content='").append(content).append('\'');
         sb.append(", teacher=").append(teacher);
         sb.append(", teacherId='").append(teacherId).append('\'');
         sb.append('}');

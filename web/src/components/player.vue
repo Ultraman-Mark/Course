@@ -35,7 +35,7 @@ export default {
         width: '100%',
         autoplay: false,
         source: url,
-        cover: 'http://liveroom-img.oss-cn-qingdao.aliyuncs.com/logo.png',
+        cover: 'https://img.alicdn.com/tfs/TB13DzOjXP7gK0jSZFjXXc5aXXa-212-48.png',
       }, function (player) {
         console.log('播放器创建好了。')
       });
@@ -44,6 +44,7 @@ export default {
     playVod (vod) {
       let _this = this;
       _this.$axios.get(process.env.VUE_APP_SERVER + '/file/web/get-auth/' + vod).then((response) => {
+        console.log(vod);
         let resp = response.data;
         if (resp.success) {
           //如果已经有播放器了，则将播放器div删除
@@ -60,7 +61,7 @@ export default {
             autoplay: false,
             vid: vod,
             playauth: resp.content,
-            cover: 'http://liveroom-img.oss-cn-qingdao.aliyuncs.com/logo.png',
+            cover: 'https://img.alicdn.com/tfs/TB13DzOjXP7gK0jSZFjXXc5aXXa-212-48.png',
             encryptType: 1, //当播放私有加密流时需要设置。
           }, function (player) {
             console.log('播放器创建好了。')

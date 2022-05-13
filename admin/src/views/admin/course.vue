@@ -350,6 +350,7 @@
         _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/course/save',_this.course).then((response)=>{
           Loading.hide();
           let resp = response.data;
+          console.log(resp);
           if (resp.success){
             $("#form-modal").modal("hide");
             _this.list(1);

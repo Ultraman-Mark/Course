@@ -1,14 +1,20 @@
 package com.course.server.service;
 
+import com.course.server.domain.Course;
 import com.course.server.domain.MemberCourse;
 import com.course.server.domain.MemberCourseExample;
 import com.course.server.dto.MemberCourseDto;
 import com.course.server.dto.PageDto;
+import com.course.server.mapper.Course.MyCourseMapper;
+import com.course.server.mapper.CourseMapper;
 import com.course.server.mapper.MemberCourseMapper;
 import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
+import com.course.server.util.VodUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -24,6 +30,11 @@ public class MemberCourseService {
 
     @Resource
     private MemberCourseMapper memberCourseMapper;
+
+    @Resource
+    private CourseMapper courseMapper;
+
+    private static final Logger LOG = LoggerFactory.getLogger(MemberCourseService.class);
 
     /**
     * 列表查询
@@ -69,6 +80,16 @@ public class MemberCourseService {
     }
 
     /**
+     * 更新报名人数
+     */
+    private void updateEnroll(String CourseId) {
+        Course course = courseMapper.selectByPrimaryKey(CourseId);
+        int number = course.getEnroll()+1;
+        course.setEnroll(number);
+        courseMapper.updateByPrimaryKey(course);
+    }
+
+    /**
      * 删除
      */
     public void delete(String id) {
@@ -86,6 +107,7 @@ public class MemberCourseService {
         if (memberCourseDb == null) {
             MemberCourse memberCourse = CopyUtil.copy(memberCourseDto, MemberCourse.class);
             this.insert(memberCourse);
+            this.updateEnroll(memberCourse.getCourseId());
             // 将数据库信息全部返回，包括id, at
             return CopyUtil.copy(memberCourse, MemberCourseDto.class);
         } else {

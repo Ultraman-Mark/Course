@@ -3,6 +3,7 @@ package com.course.business.controller.web;
 import com.course.server.dto.MemberCourseDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
+import com.course.server.service.CourseService;
 import com.course.server.service.MemberCourseService;
 import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
@@ -21,6 +22,9 @@ public class MemberCourseController {
 
     @Resource
     private MemberCourseService memberCourseService;
+
+    @Resource
+    private CourseService courseService;
 
     /**
      * 保存，id有值时更新，无值时新增

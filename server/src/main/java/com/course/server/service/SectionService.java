@@ -11,6 +11,7 @@ import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -25,8 +26,9 @@ public class SectionService {
     @Resource
     private SectionMapper sectionMapper;
 
-//    @Resource
-//    private CourseService courseService;
+    @Resource
+    @Lazy
+    private CourseService courseService;
 
     /**
     * 列表查询
@@ -55,7 +57,6 @@ public class SectionService {
 //    @Transactional(rollbackFor = Exception.class)  //Exception异常回滚
     @Transactional
     public void save(SectionDto sectionDto){
-        CourseService courseService = new CourseService();
         Section section = CopyUtil.copy(sectionDto,Section.class);
         if (!StringUtils.hasText(sectionDto.getId())){
             this.insert(section);

@@ -42,10 +42,10 @@
        */
       listCourse(page) {
         let _this = this;
-        _this.$axios.post(process.env.VUE_APP_SERVER + '/business/web/course/list', {
+        _this.$axios.post(process.env.VUE_APP_SERVER +
+            '/business/web/course/list', {
           page: page,
           size: _this.$refs.pagination.size,
-          // categoryId: _this.level2Id || _this.level1Id || "", // 优先取level2Id
         }).then((response) => {
           let resp = response.data;
 

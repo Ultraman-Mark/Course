@@ -3,24 +3,26 @@
     <div class="album py-5 bg-light">
       <div class="container">
         <div class="row course-head">
-          <div class="col-sm-6" id="cover-video-div">
-            <img class="img-fluid" v-bind:src="course.image">
-          </div>
-          <div class="col-sm-6">
-            <h1>{{course.name}}</h1>
-            <p class="course-head-item">
-              <span><i class="fa fa-clock-o"></i>{{ $filters.formatSecond(course.time) }}</span>
-              <span>{{ $filters.optionKV(COURSE_LEVEL,course.level) }}</span>
-              <span><i class="fa fa-user"></i> {{course.enroll}}</span>
-            </p>
-            <p class="course-head-desc">{{course.summary}}</p>
-            <p class="course-head-price">
-              <span class="price-now text-danger"><i class="fa fa-yen"></i>&nbsp;{{course.price}}&nbsp;&nbsp;</span>
-            </p>
-            <p class="course-head-button-links">
-              <a v-show="!memberCourse.id" v-on:click="enroll()" class="btn btn-lg btn-primary btn-shadow" href="javascript:;">立即报名</a>
-              <a v-show="memberCourse.id" href="#" class="btn btn-lg btn-success btn-shadow disabled">您已报名</a>
-            </p>
+          <div class="row shadow-lg p-3 mb-5 bg-white rounded">
+            <div class="col-sm-6" id="cover-video-div">
+              <img class="img-fluid" v-bind:src="course.image">
+            </div>
+            <div class="col-sm-4">
+              <h1>{{course.name}}</h1>
+              <p class="course-head-item">
+                <span><i class="fa fa-clock-o"></i>{{ $filters.formatSecond(course.time) }}</span>
+                <span>{{ $filters.optionKV(COURSE_LEVEL,course.level) }}</span>
+                <span><i class="fa fa-user"></i> {{course.enroll}}</span>
+              </p>
+              <p class="course-head-desc">{{course.summary}}</p>
+              <p class="course-head-price">
+                <span class="price-now text-danger"><i class="fa fa-yen"></i>&nbsp;{{course.price}}&nbsp;&nbsp;</span>
+              </p>
+              <p class="course-head-button-links">
+                <a v-show="!memberCourse.id" v-on:click="enroll()" class="btn btn-lg btn-primary btn-shadow" href="javascript:;">立即报名</a>
+                <a v-show="memberCourse.id" href="#" class="btn btn-lg btn-success btn-shadow disabled">您已报名</a>
+              </p>
+            </div>
           </div>
         </div>
 
@@ -81,7 +83,7 @@
               <img v-bind:src="teacher.image" class="card-img-top">
               <div class="card-body">
                 <h5 class="card-title">{{teacher.name}}</h5>
-                <p class="card-text">{{teacher.motto}}</p>
+                <p class="card-text badge badge-info font">{{teacher.motto}}</p>
                 <p class="card-text">{{teacher.intro}}</p>
               </div>
             </div>
@@ -95,8 +97,7 @@
 </template>
 
 <script>
-  import course from "../../../admin/src/views/admin/course";
-  import ModalPlayer from "@/components/modal-player";
+  import ModalPlayer from "../components/modal-player";
 
   export default {
     name: 'detail',
@@ -109,7 +110,7 @@
         chapters: [],
         sections: [],
         memberCourse: {},
-        COURSE_LEVEL: course.level,
+        COURSE_LEVEL: COURSE_LEVEL,
         SECTION_CHARGE: SECTION_CHARGE
       }
     },

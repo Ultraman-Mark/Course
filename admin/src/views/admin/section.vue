@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <div>
     <h4 class="lighter">
       <router-link to="/business/course" class="pink"> {{course.name}} </router-link>：
@@ -61,17 +61,17 @@
             <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
               <li>
                 <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
-																			<span class="green">
-																				<i v-on:click="edit(section)" class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-																			</span>
+                  <span class="green">
+                    <i v-on:click="edit(section)" class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+                  </span>
                 </a>
               </li>
 
               <li>
                 <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
-																			<span class="red">
-																				<i class="ace-icon fa fa-trash-o bigger-120"></i>
-																			</span>
+                  <span class="red">
+                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                  </span>
                 </a>
               </li>
             </ul>
@@ -249,7 +249,7 @@
       /**
        * 点击【保存】
        */
-      save(page){
+      save(){
         let _this = this;
 
         _this.section.video = "";
@@ -318,8 +318,6 @@
           let ele = document.getElementById("video");
           _this.section.time = parseInt(ele.duration, 10);
         }, 1000);
-        console.log("时长:");
-        console.log(_this.section.time);
       },
 
       /**

@@ -60,7 +60,7 @@ public class UploadController {
         String shardBase64 = fileDto.getShard();
         MultipartFile shard = Base64ToMultipartFile.base64ToMultipart(shardBase64);
 
-//        保存文件到本地
+        //保存文件到本地
         FileUseEnum useEnum = FileUseEnum.getByCode(use);
 
         //如果文件夹不存在则创建
@@ -163,7 +163,7 @@ public class UploadController {
             if (!StringUtils.hasText(fileDto.getVod())) {
                 fileDto.setPath(OSS_DOMAIN + fileDto.getPath());
             } else {
-                DefaultAcsClient vodClient = VodUtil.initVodClient("LTAI5t8QHuQ98MSCpEfVifjZ", "SIHvMxDoK6A5eIMF47NURwPhojAN8l");
+                DefaultAcsClient vodClient = VodUtil.initVodClient(accessKeyId, accessKeySecret);
                 GetMezzanineInfoResponse response = VodUtil.getMezzanineInfo(vodClient, fileDto.getVod());
                 System.out.println("获取视频信息, response : " + JSON.toJSONString(response));
                 String fileUrl = response.getMezzanine().getFileURL();

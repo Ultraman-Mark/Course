@@ -3,8 +3,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-body">
-          <player v-bind:player-id="'modal-player-div'"
-                  ref="player"></player>
+          <player v-bind:player-id="'modal-player-div'" ref="player"></player>
         </div>
       </div>
     </div>

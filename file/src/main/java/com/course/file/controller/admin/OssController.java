@@ -90,7 +90,8 @@ public class OssController {
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
         ObjectMetadata meta = new ObjectMetadata();
-// 指定上传的内容类型。
+
+        // 指定上传的内容类型。
         meta.setContentType("text/plain");
 
         // 通过AppendObjectRequest设置多个参数。

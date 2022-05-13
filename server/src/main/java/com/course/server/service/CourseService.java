@@ -97,11 +97,18 @@ public class CourseService {
     }
 
     /**
-     * 更新
+     * 更新日期
      */
     private void update(Course course) {
         course.setUpdatedAt(new Date());
         courseMapper.updateByPrimaryKey(course);
+    }
+
+    /**
+     * 更新日期
+     */
+    private void updateNumber(){
+
     }
 
     /**
@@ -117,7 +124,7 @@ public class CourseService {
      * @return
      */
     public void updateTime(String courseId) {
-        LOG.info("更新课程时长：{}", courseId);
+        LOG.info("更新课程时长:{}", courseId);
         myCourseMapper.updateTime(courseId);
     }
 

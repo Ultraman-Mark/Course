@@ -43,4 +43,13 @@
         ]]>
     </update>
 
+    <select id="">
+
+    </select>
+
+    <update id="updateNumber">
+        update course c set `number` = (select `number` from `course` where course.id = #{courseId})+1
+        where c.id = #{courseId}
+    </update>
+
 </mapper>

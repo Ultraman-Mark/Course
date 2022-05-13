@@ -95,8 +95,7 @@
 </template>
 
 <script>
-  import course from "../../../admin/src/views/admin/course";
-  import ModalPlayer from "@/components/modal-player";
+  import ModalPlayer from "../components/modal-player";
 
   export default {
     name: 'detail',
@@ -109,7 +108,7 @@
         chapters: [],
         sections: [],
         memberCourse: {},
-        COURSE_LEVEL: course.level,
+        COURSE_LEVEL: COURSE_LEVEL,
         SECTION_CHARGE: SECTION_CHARGE
       }
     },

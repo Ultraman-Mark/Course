@@ -30,7 +30,6 @@
 		<spring-cloud.version>2021.0.0</spring-cloud.version>
 	</properties>
 
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -133,7 +132,6 @@
 <!--				<groupId>org.springframework.boot</groupId>-->
 <!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
 <!--			</plugin>-->
-
 			<plugin>
 				<groupId>org.mybatis.generator</groupId>
 				<artifactId>mybatis-generator-maven-plugin</artifactId>

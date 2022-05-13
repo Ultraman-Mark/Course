@@ -26,7 +26,6 @@ export default {
     },
 
     playVod(vod) {
-      console.log("vod:"+vod);
       let _this = this;
       _this.$refs.player.playVod(vod);
       $("#player-modal").modal("show");

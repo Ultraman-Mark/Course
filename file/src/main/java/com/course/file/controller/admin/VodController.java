@@ -47,8 +47,8 @@ public class VodController {
         String use = fileDto.getUse();
         String key = fileDto.getKey();
         String suffix = fileDto.getSuffix();
-        Integer shardIndex = fileDto.getShardIndex();
-        Integer shardSize = fileDto.getShardSize();
+//        Integer shardIndex = fileDto.getShardIndex();
+//        Integer shardSize = fileDto.getShardSize();
         String shardBase64 = fileDto.getShard();
         MultipartFile shard = Base64ToMultipartFile.base64ToMultipart(shardBase64);
 
@@ -83,6 +83,7 @@ public class VodController {
         try {
             // 初始化VOD客户端并获取上传地址和凭证
             DefaultAcsClient vodClient = VodUtil.initVodClient(accessKeyId, accessKeySecret);
+
             CreateUploadVideoResponse createUploadVideoResponse = VodUtil.createUploadVideo(vodClient, path);
             // 执行成功会返回VideoId、UploadAddress和UploadAuth
             vod = createUploadVideoResponse.getVideoId();
@@ -94,7 +95,6 @@ public class VodController {
             OSSClient ossClient = VodUtil.initOssClient(uploadAuth, uploadAddress);
             // 上传文件，注意是同步上传会阻塞等待，耗时与文件大小和网络上行带宽有关
             VodUtil.uploadLocalFile(ossClient, uploadAddress, shard.getInputStream());
-
             LOG.info("上传视频成功, vod : " + vod);
             GetMezzanineInfoResponse response = VodUtil.getMezzanineInfo(vodClient, vod);
             System.out.println("获取视频信息, response : " + JSON.toJSONString(response));

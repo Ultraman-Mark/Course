@@ -72,7 +72,8 @@ public class VodUtil {
         String endpoint = uploadAddress.getString("Endpoint");
         String accessKeyId = uploadAuth.getString("AccessKeyId");
         String accessKeySecret = uploadAuth.getString("AccessKeySecret");
-        return new OSSClient(endpoint, accessKeyId, accessKeySecret);
+        String securityToken = uploadAuth.getString("SecurityToken");
+        return new OSSClient(endpoint, accessKeyId, accessKeySecret,securityToken);
     }
 
     /**
@@ -85,9 +86,7 @@ public class VodUtil {
         String bucketName = uploadAddress.getString("Bucket");
         String objectName = uploadAddress.getString("FileName");
         // 单文件上传
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, objectName, inputStream);
-        ossClient.putObject(putObjectRequest);
-
+        ossClient.putObject(bucketName, objectName, inputStream);
         /* 视频点播不支持追加上传
         // 追加上传
         ObjectMetadata meta = new ObjectMetadata();
@@ -108,8 +107,7 @@ public class VodUtil {
         String objectName = uploadAddress.getString("FileName");
         File file = new File(localFile);
         // 单文件上传
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, objectName, new File(localFile));
-        ossClient.putObject(putObjectRequest);
+        ossClient.putObject(bucketName, objectName, file);
 
         /* 视频点播不支持追加上传
         // 追加上传

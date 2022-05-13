@@ -2,7 +2,6 @@ package com.course.file.controller.web;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;

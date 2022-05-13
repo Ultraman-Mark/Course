@@ -36,7 +36,7 @@ export default {
         width: '100%',
         autoplay: false,
         source: url,
-        cover: 'http://liveroom-img.oss-cn-qingdao.aliyuncs.com/logo.png',
+        cover: 'https://img.alicdn.com/tfs/TB13DzOjXP7gK0jSZFjXXc5aXXa-212-48.png',
       }, function (player) {
         console.log('播放器创建好了。')
       });
@@ -63,7 +63,7 @@ export default {
             autoplay: false,
             vid: vod,
             playauth: resp.content,
-            cover: 'http://liveroom-img.oss-cn-qingdao.aliyuncs.com/logo.png',
+            cover: 'https://img.alicdn.com/tfs/TB13DzOjXP7gK0jSZFjXXc5aXXa-212-48.png',
             encryptType: 1, //当播放私有加密流时需要设置。
           }, function (player) {
             console.log('播放器创建好了。')

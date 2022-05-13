@@ -17,7 +17,7 @@
         <th>验证码</th>
         <th>用途</th>
         <th>生成时间</th>
-        <th>用途</th>
+        <th>状态</th>
       </tr>
       </thead>
 

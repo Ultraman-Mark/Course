@@ -117,7 +117,7 @@ public class CourseService {
      * @return
      */
     public void updateTime(String courseId) {
-        LOG.info("更新课程时长：{}", courseId);
+        LOG.info("更新课程时长:{}", courseId);
         myCourseMapper.updateTime(courseId);
     }
 

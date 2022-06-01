@@ -44,7 +44,7 @@
 
             <!-- Tab panes -->
             <div class="tab-content">
-              <div class="tab-pane active" id="info" v-html="course.content">
+              <div class="tab-pane active" id="info" v-html="course.summary">
               </div>
               <div class="tab-pane" id="chapter">
                 <div v-for="(chapter, i) in chapters" class="chapter">

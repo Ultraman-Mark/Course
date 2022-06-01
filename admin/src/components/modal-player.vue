@@ -19,12 +19,17 @@ export default {
       aliPlayer: {}, // 播放器实例
     }
   },
+  mounted() {
+    let _this = this;
+    $('#player-modal').on('hidden.bs.modal',function (e){
+      _this.$refs.player.pause();
+    })
+  },
   methods: {
     playUrl(url) {
       let _this = this;
       _this.$refs.player.playUrl(url);
     },
-
     playVod(vod) {
       console.log("vod:"+vod);
       let _this = this;

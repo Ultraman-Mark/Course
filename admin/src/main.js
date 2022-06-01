@@ -27,7 +27,22 @@ axios.interceptors.response.use(
      function (response) {
     console.log("返回:",response);
     return response;
-},error => {return error;});
+},error => {
+    console.log("返回拦截:",error.response);
+    let response = error.response;
+    const status = response.status;
+    if (status==401){
+        console.log("未登录，跳到登录页面");
+        Tool.setLoginUser(null);
+        router.push('/login');
+    }
+    return{
+        data:{
+            success: false,
+            message: "请重新登录"
+        }
+    };
+});
 
 // 路由登录拦截
 router.beforeEach((to, from, next) => {

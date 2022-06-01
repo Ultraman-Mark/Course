@@ -346,6 +346,7 @@
         }
         _this.course.categorys = categorys;
 
+
         Loading.show();
         _this.$axios.post(process.env.VUE_APP_SERVER+'/business/admin/course/save',_this.course).then((response)=>{
           Loading.hide();
@@ -500,7 +501,7 @@
       afterUpload(resp) {
         let _this = this;
         let image = resp.content;
-        _this.course.image = image;
+        _this.course.image = image.path;
       },
 
     }
